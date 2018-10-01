@@ -1,0 +1,11 @@
+{
+  "name": "carousa11y",
+  "version": "0.0.1",
+  "description": "An accessible carousel class.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "James Catt",
+  "license": "ISC"
+}

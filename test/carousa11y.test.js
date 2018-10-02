@@ -2,6 +2,10 @@ import Carousa11y from '../src/carousa11y.es6';
 
 describe("Test Constructor", () => {
 
+    beforeEach(() => {
+        document.body.innerHTML = '';
+    });
+
     test("throws error when called without valid carouselRoot", async () => {
 
         let slides = [];
@@ -97,6 +101,10 @@ describe("Test Constructor", () => {
 
 
 describe("Test Functionality", () => {
+
+    beforeEach(() => {
+        document.body.innerHTML = '';
+    });
 
     test("only allows setting autoAdvance to number", async () => {
 

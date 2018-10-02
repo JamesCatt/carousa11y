@@ -153,6 +153,27 @@ describe("Test Constructor", () => {
 
     });
 
+    test("appends slide navigation buttons to carouselRoot by default", async () => {
+
+        let testCarousel = getTestCarousel();
+        document.body.appendChild(testCarousel.root);
+        let testCarousa11y = new Carousa11y(testCarousel.root, testCarousel.slides);
+
+        expect(testCarousel.root.querySelector('.c-carousa11y__controls--goto')).not.toBeNull();
+        expect(testCarousel.root.querySelectorAll('.c-carousa11y__button--go-to-slide')).toHaveLength(testCarousel.slides.length);
+
+    });
+
+    test("doesn't append slide navigation buttons to carouselRoot when option set", async () => {
+
+        let testCarousel = getTestCarousel();
+        document.body.appendChild(testCarousel.root);
+        let testCarousa11y = new Carousa11y(testCarousel.root, testCarousel.slides, { autoCreateControls: { slideButtons: false } });
+
+        expect(testCarousel.root.querySelector('.c-carousa11y__controls--goto')).toBeNull();
+
+    });
+
     /* Tests to add:
     * - currentSlide getter method returns correct index
     */

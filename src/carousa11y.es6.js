@@ -69,6 +69,10 @@ export default class Carousa11y {
             this.carouselRoot.appendChild(this._createPlayStopButton(this.autoAdvance > 0));
         }
 
+        if (this.autoCreateControls.slideButtons !== false) {
+            this.carouselRoot.appendChild(this._createGoToSlideControls(this.carouselSlides.length));
+        }
+
     }
 
     /**

@@ -116,9 +116,7 @@ export default class Carousa11y {
     /**
      * @return {HTMLDivElement} - Returns a <div> with the appropriate attributes for the aria-live slide announcement element, for insertion into the DOM.
      */
-    static _createAnnounceElement() {
-        /*let announceElement = document.createElement('div');
-        announceElement.setAttribute('id', 'carousa11yAnnounceElement');
+    _createAnnounceElement() {
         announceElement.setAttribute('aria-live', 'polite');
         announceElement.setAttribute('aria-atomic', 'true');
         announceElement.classList.add('c-carousa11y__announce', 'u-display--screenreader-only');*/
@@ -131,7 +129,7 @@ export default class Carousa11y {
     /**
      * @return {HTMLUListElement} - Returns a <ul> with nested previous/next slide buttons, for insertion into the DOM.
      */
-    static _createPrevNextControls() {
+    _createPrevNextControls() {
 
         /*let controlsElement = document.createElement('ul');
         controlsElement.classList.add('c-carousa11y__controls', 'c-carousa11y__controls--prev-next');
@@ -195,7 +193,7 @@ export default class Carousa11y {
      * @param {boolean} currentlyPlaying - If true, the returned button will be toggled to play mode on.
      * @return {HTMLButtonElement} - Returns a <button> to serve as a play/stop toggle for insertion into the DOM.
      */
-    static _createPlayPauseButton(currentlyPlaying) {
+    _createPlayPauseButton(currentlyPlaying) {
 
         /*let playStopButton = document.createElement('button');
         playStopButton.setAttribute('id', 'carousa11yPlayStopButton');*/
@@ -218,7 +216,7 @@ export default class Carousa11y {
      * @param {number} slideCount - Number of slides in the carousel.
      * @return {HTMLOListElement} - Returns an <ol> with nested buttons to advance to a particular slide for insertion into the DOM.
      */
-    static _createGoToSlideControls(slideCount) {
+    _createGoToSlideControls(slideCount) {
 
         let goToControlsElement = document.createElement('ol');
         goToControlsElement.classList.add('c-carousa11y__controls', 'c-carousa11y__controls--goto');

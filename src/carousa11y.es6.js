@@ -4,40 +4,246 @@
  * License: ?
  */
 
-class Carousa11y {
+export default class Carousa11y {
+    
     /**
      * @constructor
      * @param {HTMLElement} carouselRoot - Root/wrapper HTML element for the carousel
      * @param {Array.<HTMLElement>} carouselSlides - The slides for inclusion in the carousel
-     * @param {(boolean|Object)} autoCreateControls - Setting false suppresses creation of any controls. Object allows suppression of specific control elements
-     * @param {boolean} autoCreateControls.announceElement - Set false to suppress creation of an aria-live region for announcing the current slide.
-     * @param {boolean} autoCreateControls.prevButton - Set false to suppress creation of a 'previous slide' button.
-     * @param {boolean} autoCreateControls.nextButton - Set false to suppress creation of a 'next slide' button.
-     * @param {boolean} autoCreateControls.playStopButton - Set false to suppress creation of a play/stop toggle button.
-     * @param {boolean} autoCreateControls.slideButtons - Set false to suppress creation of a list of buttons for selecting a specific slide.
+     * @param {Object} options - Options container
+     * @param {Number} options.autoAdvance - Number of milliseconds to wait between auto-advancing to next slide. Set 0 to disable auto-advance.
+     * @param {(boolean|Object)} options.autoCreateControls - Setting false suppresses creation of any controls. Object allows suppression of specific control elements
+     * @param {boolean} options.autoCreateControls.announceElement - Set false to suppress creation of an aria-live region for announcing the current slide.
+     * @param {boolean} options.autoCreateControls.prevButton - Set false to suppress creation of a 'previous slide' button.
+     * @param {boolean} options.autoCreateControls.nextButton - Set false to suppress creation of a 'next slide' button.
+     * @param {boolean} options.autoCreateControls.playStopButton - Set false to suppress creation of a play/stop toggle button.
+     * @param {boolean} options.autoCreateControls.slideButtons - Set false to suppress creation of a list of buttons for selecting a specific slide.
      */
-    constructor(carouselRoot, carouselSlides, autoCreateControls) {
+    constructor(
+
+        carouselRoot,
+        carouselSlides,
+        { // default options
+            autoAdvance = 5000,
+            autoCreateControls = {},
+        } = {}
+
+    ) {
 
         // validate carouselRoot
-        if (!carouselRoot instanceof HTMLElement) {
+        if (carouselRoot instanceof HTMLElement !== true) {
             throw new Error('carouselRoot must be an HTMLElement.');
         }
 
         // validate carouselSlides
-        if (!carouselSlides instanceof Array) {
-            throw new Error('carouselSlides must be an array.');
+        if (carouselSlides instanceof Array !== true || carouselSlides.length == 0) {
+            throw new Error('carouselSlides must be a non-empty array.');
         }
 
         carouselSlides.forEach(slide => {
 
-            if (!slide instanceof HTMLElement) {
+            if (slide instanceof HTMLElement !== true) {
                 throw new Error(`carouselSlides array must contain only HTMLElements. carouselSlides[${index}] failed this test.`);
             }
 
         });
 
+        // validate options
+        //console.log(autoAdvance);
+
+        // validation tests passed, proceed with instantiation
+        this.carouselRoot = carouselRoot;
+        this.carouselSlides = carouselSlides;
+
+    }
+
+    /**
+     * Go to the next slide
+     */
+    nextSlide() {
+
+    }
+
+    /**
+     * Go to the previous slide
+     */
+    previousSlide() {
+
+    }
+
+    /**
+     * Go to a specific slide
+     * @param {Number} slideIndex - Index of the slide to go to.
+     */
+    goToSlide(slideIndex) {
+
+    }
+
+    /**
+     * Start auto-advancing the carousel
+     */
+    play() {
+
+    }
+
+    /**
+     * Stop auto-advancing the carousel
+     */
+    stop() {
+
+    }
+
+    /**
+     * Get the currently-displayed slide
+     * @return {Number} - index of the currently-displayed slide
+     */
+    get currentSlide() {
+
+    }
+
+    /**
+     * Set the auto-advance timer
+     * @param {Number} duration - number of milliseconds before auto-advancing to the next slide
+     */
+    set autoAdvance(duration) {
+        if (typeof duration !== 'number') {
+            throw new Error('autoAdvance must be set to an integer (milliseconds).');
+        }
+    }
+
+    // Control creation methods
+
+    /**
+     * @return {HTMLDivElement} - Returns a <div> with the appropriate attributes for the aria-live slide announcement element, for insertion into the DOM.
+     */
+    static _createAnnounceElement() {
+        /*let announceElement = document.createElement('div');
+        announceElement.setAttribute('id', 'carousa11yAnnounceElement');
+        announceElement.setAttribute('aria-live', 'polite');
+        announceElement.setAttribute('aria-atomic', 'true');
+        announceElement.classList.add('c-carousa11y__announce', 'u-display--screenreader-only');*/
+
+        let announceElement = "<div id='carousa11yAnnounceElement' class='c-carousa11y__announce u-display--screenreader-only' aria-live='polite' aria-atomic='true'></div>";
+
+        return announceElement;
+    }
+
+    /**
+     * @return {HTMLUListElement} - Returns a <ul> with nested previous/next slide buttons, for insertion into the DOM.
+     */
+    static _createPrevNextControls() {
+
+        /*let controlsElement = document.createElement('ul');
+        controlsElement.classList.add('c-carousa11y__controls', 'c-carousa11y__controls--prev-next');
+
+        let prevItem = document.createElement('li');
+        prevItem.classList.add('c-carousa11y__controls-item', 'c-carousa11y__controls-item--prev');
+
+        let prevButton = document.createElement('button');
+        prevButton.setAttribute('id', 'carousa11yPrevButton');
+        prevButton.classList.add('c-carousa11y__button', 'c-carousa11y__button--prev');
+
+        prevItem.appendChild(prevButton);
+        controlsElement.appendChild(prevItem);
+
+        let nextItem = document.createElement('li');
+        nextItem.classList.add('c-carousa11y__controls-item', 'c-carousa11y__controls-item--next');
+
+        let nextButton = document.createElement('button');
+        nextButton.setAttribute('id', 'carousa11yNextButton');
+        nextButton.classList.add('c-carousa11y__button', 'c-carousa11y__button--next');
+
+        nextItem.appendChild(nextButton);
+        controlsElement.appendChild(nextItem);*/
+
+        const controlsElement = 
+
+            `<ul class='c-carousa11y__controls c-carousa11y__controls--prev-next'>
+
+                <li class='c-carousa11y__controls-item c-carousa11y__controls-item--prev'>
+
+                    <button id='carousa11yPrevButton' class='c-carousa11y__button c-carousa11y__button--prev'>
+
+                        <span class='u-display--screenreader-only'>Go to previous slide</span>
+
+                        <!-- Zondicons by Steve Schroger - http://www.zondicons.com/ -->
+                        <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' class='c-carousa11y__button-icon' aria-hidden='true' role='presentation'><path d='M7.05 9.293L6.343 10 12 15.657l1.414-1.414L9.172 10l4.242-4.243L12 4.343z'/></svg>
+
+                    </button>
+
+                </li>
+
+                <li class='c-carousa11y__controls-item c-carousa11y__controls-item--next'>
+
+                    <button id='carousa11yNextButton' class='c-carousa11y__button c-carousa11y__button--next'>
+
+                        <span class='u-display--screenreader-only'>Go to next slide</span>
+
+                        <!-- Zondicons by Steve Schroger - http://www.zondicons.com/ -->
+                        <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' class='c-carousa11y__button-icon' aria-hidden='true' role='presentation'><path d='M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z'/></svg>
+
+                    </button>
+
+                </li>
+
+            </ul>`;
+
+        return controlsElement;
+    }
+
+    /**
+     * @param {boolean} currentlyPlaying - If true, the returned button will be toggled to play mode on.
+     * @return {HTMLButtonElement} - Returns a <button> to serve as a play/stop toggle for insertion into the DOM.
+     */
+    static _createPlayPauseButton(currentlyPlaying) {
+
+        /*let playStopButton = document.createElement('button');
+        playStopButton.setAttribute('id', 'carousa11yPlayStopButton');*/
+
+        const playStopButton = 
+
+            `<button id='carousa11yPlayStopButton' class='c-carousa11y__button c-carousa11y__button--play-stop' aria-label='${currentPlaying === true ? 'Stop' : 'Play'}' data-state='${currentPlaying === true ? 'playing' : 'stopped'}'>
+
+                <!-- Zondicons by Steve Shroger - http://www.zondicons.com/ -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="c-carousa11y__button-icon c-carousa11y__button-icon--play" aria-hidden="true" role="presentation"><path d="M4 4l12 6-12 6z"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="c-carousa11y__button-icon c-carousa11y__button-icon--pause" aria-hidden="true" role="presentation"><path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zM7 6v8h2V6H7zm4 0v8h2V6h-2z"/></svg>
+
+            </button>`;
+
+        return playStopButton;
+
+    }
+
+    /**
+     * @param {number} slideCount - Number of slides in the carousel.
+     * @return {HTMLOListElement} - Returns an <ol> with nested buttons to advance to a particular slide for insertion into the DOM.
+     */
+    static _createGoToSlideControls(slideCount) {
+
+        let goToControlsElement = document.createElement('ol');
+        goToControlsElement.classList.add('c-carousa11y__controls', 'c-carousa11y__controls--goto');
+
+        for (let i = 0; i < slideCount; i++) {
+
+            let goToSlideItem = document.createElement('li');
+            goToSlideItem.classList.add('c-carousa11y__controls-item', 'c-carousa11y__controls-item--go-to-slide');
+
+            let goToSlideButton = document.createElement('button');
+            goToSlideButton.classList.add('c-carousa11y__button', 'c-carousa11y__button--go-to-slide');
+            goToSlideButton.dataset.slideButton = i;
+            goToSlideButton.innerHTML = `
+            
+                <span class="u-display--screenreader-only">Go to slide ${i + 1}</span>
+            
+            `;
+
+            goToSlideItem.appendChild(goToSlideButton);
+            goToControlsElement.appendChild(goToSlideItem);
+
+        }
+
+        return goToControlsElement;
+
     }
 
 }
-
-export default Carousa11y;

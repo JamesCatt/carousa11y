@@ -133,6 +133,26 @@ describe("Test Constructor", () => {
 
     });
 
+    test("appends play/pause button to carouselRoot by default", async () => {
+
+        let testCarousel = getTestCarousel();
+        document.body.appendChild(testCarousel.root);
+        let testCarousa11y = new Carousa11y(testCarousel.root, testCarousel.slides);
+
+        expect(testCarousel.root.querySelector('#carousa11yPlayStopButton')).not.toBeNull();
+
+    });
+
+    test("doesn't append play/pause button to carouselRoot when option set", async () => {
+
+        let testCarousel = getTestCarousel();
+        document.body.appendChild(testCarousel.root);
+        let testCarousa11y = new Carousa11y(testCarousel.root, testCarousel.slides, { autoCreateControls: { playStopButton: false } });
+
+        expect(testCarousel.root.querySelector('#carousa11yPlayStopButton')).toBeNull();
+
+    });
+
     /* Tests to add:
     * - currentSlide getter method returns correct index
     */

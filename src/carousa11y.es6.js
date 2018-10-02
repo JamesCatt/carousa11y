@@ -54,6 +54,7 @@ export default class Carousa11y {
         this.carouselRoot = carouselRoot;
         this.carouselSlides = carouselSlides;
         this.autoCreateControls = autoCreateControls;
+        this.autoAdvance = autoAdvance; // note that validity checking of autoAdvance value will be handled by the autoAdvance setter method
 
         // insert default controls as appropriate
         if (this.autoCreateControls.announceElement !== false) {
@@ -62,6 +63,10 @@ export default class Carousa11y {
 
         if (this.autoCreateControls.prevNextButtons !== false) {
             this.carouselRoot.appendChild(this._createPrevNextControls());
+        }
+
+        if (this.autoCreateControls.playStopButton !== false) {
+            this.carouselRoot.appendChild(this._createPlayStopButton(this.autoAdvance > 0));
         }
 
     }
@@ -104,7 +109,7 @@ export default class Carousa11y {
 
     /**
      * Get the currently-displayed slide
-     * @return {Number} - index of the currently-displayed slide
+     * @return {number} - index of the currently-displayed slide
      */
     get currentSlide() {
 
@@ -112,12 +117,21 @@ export default class Carousa11y {
 
     /**
      * Set the auto-advance timer
-     * @param {Number} duration - number of milliseconds before auto-advancing to the next slide
+     * @param {number} duration - number of milliseconds before auto-advancing to the next slide
      */
     set autoAdvance(duration) {
         if (typeof duration !== 'number') {
             throw new Error('autoAdvance must be set to an integer (milliseconds).');
         }
+        this._autoAdvance = duration;
+    }
+
+    /**
+     * Get the current auto-advance timer
+     * @returns {number}
+     */
+    get autoAdvance() {
+        return this._autoAdvance;
     }
 
     // Control creation methods
@@ -178,20 +192,20 @@ export default class Carousa11y {
      * @param {boolean} currentlyPlaying - If true, the returned button will be toggled to play mode on.
      * @return {HTMLButtonElement} - Returns a <button> to serve as a play/stop toggle for insertion into the DOM.
      */
-    _createPlayPauseButton(currentlyPlaying) {
+    _createPlayStopButton(currentlyPlaying) {
 
-        /*let playStopButton = document.createElement('button');
-        playStopButton.setAttribute('id', 'carousa11yPlayStopButton');*/
+        let playStopButton = document.createElement('button');
+        playStopButton.setAttribute('id', 'carousa11yPlayStopButton');
+        playStopButton.setAttribute('aria-label', currentlyPlaying === true ? 'Stop' : 'Play');
+        playStopButton.dataset.state = currentlyPlaying === true ? 'playing' : 'stopped';
+        playStopButton.className = 'c-carousa11y__button c-carousa11y__button--play-stop';
+        playStopButton.innerHTML = `
 
-        const playStopButton = 
-
-            `<button id='carousa11yPlayStopButton' class='c-carousa11y__button c-carousa11y__button--play-stop' aria-label='${currentPlaying === true ? 'Stop' : 'Play'}' data-state='${currentPlaying === true ? 'playing' : 'stopped'}'>
-
-                <!-- Zondicons by Steve Shroger - http://www.zondicons.com/ -->
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="c-carousa11y__button-icon c-carousa11y__button-icon--play" aria-hidden="true" role="presentation"><path d="M4 4l12 6-12 6z"/></svg>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="c-carousa11y__button-icon c-carousa11y__button-icon--pause" aria-hidden="true" role="presentation"><path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zM7 6v8h2V6H7zm4 0v8h2V6h-2z"/></svg>
-
-            </button>`;
+            <!-- Zondicons by Steve Shroger - http://www.zondicons.com/ -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="c-carousa11y__button-icon c-carousa11y__button-icon--play" aria-hidden="true" role="presentation"><path d="M4 4l12 6-12 6z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="c-carousa11y__button-icon c-carousa11y__button-icon--pause" aria-hidden="true" role="presentation"><path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zM7 6v8h2V6H7zm4 0v8h2V6h-2z"/></svg>
+            
+        `;
 
         return playStopButton;
 

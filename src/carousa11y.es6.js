@@ -56,6 +56,10 @@ export default class Carousa11y {
         this.autoCreateControls = autoCreateControls;
         this.autoAdvanceTime = autoAdvanceTime; // note that validity checking of autoAdvanceTime value will be handled by the autoAdvanceTime setter method
 
+        // Private properties
+        this._playing = this.autoAdvanceTime !== 0;
+        this._currentSlide = 0;
+
         // insert default controls as appropriate
         if (this.autoCreateControls.announceElement !== false) {
             this.carouselRoot.appendChild(this._createAnnounceElement());
@@ -237,6 +241,10 @@ export default class Carousa11y {
                 <span class="u-display--screenreader-only">Go to slide ${i + 1}</span>
             
             `;
+
+            if (i === this._currentSlide) {
+                goToSlideButton.setAttribute('aria-current', 'true');
+            }
 
             goToSlideItem.appendChild(goToSlideButton);
             goToControlsElement.appendChild(goToSlideItem);

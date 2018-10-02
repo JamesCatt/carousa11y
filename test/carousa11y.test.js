@@ -161,6 +161,7 @@ describe("Test Constructor", () => {
 
         expect(testCarousel.root.querySelector('.c-carousa11y__controls--goto')).not.toBeNull();
         expect(testCarousel.root.querySelectorAll('.c-carousa11y__button--go-to-slide')).toHaveLength(testCarousel.slides.length);
+        expect(testCarousel.root.querySelectorAll('[aria-current="true"]')).toHaveLength(1);
 
     });
 

@@ -4,13 +4,14 @@
   "description": "An accessible carousel class.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "author": "James Catt",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.1.2",
     "@babel/preset-env": "^7.1.0",
+    "babel-core": "^7.0.0-bridge.0",
     "gulp": "^3.9.1",
     "gulp-babel": "^8.0.0",
     "gulp-jest": "^4.0.2",
@@ -18,6 +19,22 @@
     "gulp-uglify": "^3.0.1",
     "jest": "^23.6.0",
     "jest-cli": "^23.6.0",
-    "pump": "^3.0.0"
+    "pump": "^3.0.0",
+    "regenerator-runtime": "^0.12.1"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env"
+    ]
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "<rootDir>/node_modules/",
+      "<rootDir>/test/._*.test.js"
+    ],
+    "testEnvironment": "jsdom",
+    "setupFiles": [
+      "<rootDir>/src/carousa11y.es6.js"
+    ]
   }
 }

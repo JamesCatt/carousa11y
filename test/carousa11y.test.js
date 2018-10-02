@@ -188,7 +188,7 @@ describe("Test Functionality", () => {
         document.body.innerHTML = '';
     });
 
-    test("only allows setting autoAdvance to number", async () => {
+    test("only allows setting autoAdvanceTime to number", async () => {
 
         let testCarousel = getTestCarousel();
 
@@ -198,19 +198,19 @@ describe("Test Functionality", () => {
 
         expect(() => {
 
-            testCarousa11y.autoAdvance = 1000;
+            testCarousa11y.autoAdvanceTime = 1000;
 
         }).not.toThrowError();
 
         expect(() => {
 
-            testCarousa11y.autoAdvance = 'string';
+            testCarousa11y.autoAdvanceTime = 'string';
 
         }).toThrowError();
 
         expect(() => {
 
-            testCarousa11y.autoAdvance = [];
+            testCarousa11y.autoAdvanceTime = [];
 
         }).toThrowError();
 

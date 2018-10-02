@@ -11,7 +11,7 @@ export default class Carousa11y {
      * @param {HTMLElement} carouselRoot - Root/wrapper HTML element for the carousel
      * @param {Array.<HTMLElement>} carouselSlides - The slides for inclusion in the carousel
      * @param {Object} options - Options container
-     * @param {Number} options.autoAdvance - Number of milliseconds to wait between auto-advancing to next slide. Set 0 to disable auto-advance.
+     * @param {Number} options.autoAdvanceTime - Number of milliseconds to wait between auto-advancing to next slide. Set 0 to disable auto-advance.
      * @param {(boolean|Object)} options.autoCreateControls - Setting false suppresses creation of any controls. Object allows suppression of specific control elements
      * @param {boolean} options.autoCreateControls.announceElement - Set false to suppress creation of an aria-live region for announcing the current slide.
      * @param {boolean} options.autoCreateControls.prevNextButtons - Set false to suppress creation of 'previous slide' and 'next slide' controls.
@@ -23,7 +23,7 @@ export default class Carousa11y {
         carouselRoot,
         carouselSlides,
         { // default options
-            autoAdvance = 5000,
+            autoAdvanceTime = 5000,
             autoCreateControls = {},
         } = {}
 
@@ -48,13 +48,13 @@ export default class Carousa11y {
         });
 
         // validate options
-        //console.log(autoAdvance);
+        //console.log(autoAdvanceTime);
 
         // validation tests passed, proceed with instantiation
         this.carouselRoot = carouselRoot;
         this.carouselSlides = carouselSlides;
         this.autoCreateControls = autoCreateControls;
-        this.autoAdvance = autoAdvance; // note that validity checking of autoAdvance value will be handled by the autoAdvance setter method
+        this.autoAdvanceTime = autoAdvanceTime; // note that validity checking of autoAdvanceTime value will be handled by the autoAdvanceTime setter method
 
         // insert default controls as appropriate
         if (this.autoCreateControls.announceElement !== false) {
@@ -66,7 +66,7 @@ export default class Carousa11y {
         }
 
         if (this.autoCreateControls.playStopButton !== false) {
-            this.carouselRoot.appendChild(this._createPlayStopButton(this.autoAdvance > 0));
+            this.carouselRoot.appendChild(this._createPlayStopButton(this.autoAdvanceTime > 0));
         }
 
         if (this.autoCreateControls.slideButtons !== false) {
@@ -123,19 +123,19 @@ export default class Carousa11y {
      * Set the auto-advance timer
      * @param {number} duration - number of milliseconds before auto-advancing to the next slide
      */
-    set autoAdvance(duration) {
+    set autoAdvanceTime(duration) {
         if (typeof duration !== 'number') {
-            throw new Error('autoAdvance must be set to an integer (milliseconds).');
+            throw new Error('autoAdvanceTime must be set to an integer (milliseconds).');
         }
-        this._autoAdvance = duration;
+        this._autoAdvanceTime = duration;
     }
 
     /**
      * Get the current auto-advance timer
      * @returns {number}
      */
-    get autoAdvance() {
-        return this._autoAdvance;
+    get autoAdvanceTime() {
+        return this._autoAdvanceTime;
     }
 
     // Control creation methods

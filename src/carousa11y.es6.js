@@ -54,6 +54,12 @@ export default class Carousa11y {
         // validation tests passed, proceed with instantiation
         this.carouselRoot = carouselRoot;
         this.carouselSlides = carouselSlides;
+        this.autoCreateControls = autoCreateControls;
+
+        // insert default controls as appropriate
+        if (this.autoCreateControls.announceElement !== false) {
+            this.carouselRoot.appendChild(this._createAnnounceElement());
+        }
 
     }
 
@@ -117,11 +123,11 @@ export default class Carousa11y {
      * @return {HTMLDivElement} - Returns a <div> with the appropriate attributes for the aria-live slide announcement element, for insertion into the DOM.
      */
     _createAnnounceElement() {
+    let announceElement = document.createElement('div');
+        announceElement.id = 'carousa11yAnnounceElement';
         announceElement.setAttribute('aria-live', 'polite');
         announceElement.setAttribute('aria-atomic', 'true');
-        announceElement.classList.add('c-carousa11y__announce', 'u-display--screenreader-only');*/
-
-        let announceElement = "<div id='carousa11yAnnounceElement' class='c-carousa11y__announce u-display--screenreader-only' aria-live='polite' aria-atomic='true'></div>";
+        announceElement.classList.add('c-carousa11y__announce', 'u-display--screenreader-only');
 
         return announceElement;
     }

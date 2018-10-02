@@ -8,32 +8,29 @@ describe("Test Constructor", () => {
 
     test("throws error when called without valid carouselRoot", async () => {
 
-        let slides = [];
-
-        for (let i = 0; i < 3; i++) {
-            let newSlide = document.createElement('div');
-            slides.push(newSlide);
-        }
+        let testCarousel = getTestCarousel();
+        document.body.appendChild(testCarousel.root);
 
         expect(() => {
-            const testCarousel = new Carousa11y(slides);
+            const testCarousel = new Carousa11y(testCarousel.slides);
         }).toThrowError();
 
         const invalidRoot = 'string';
 
         expect(() => {
-            const testCarousel = new Carousa11y(invalidRoot, slides);
+            const testCarousel = new Carousa11y(invalidRoot, testCarousel.slides);
         }).toThrowError();
 
     });
 
     test("throws error when called without valid carouselSlides", async () => {
 
-        const carouselRoot = document.createElement('div');
+        let testCarousel = getTestCarousel();
+        document.body.appendChild(testCarousel.root);
 
         expect(() => {
 
-            const testCarousel = new Carousa11y(carouselRoot);
+            const testCarousel = new Carousa11y(testCarousel.Root);
 
         }).toThrowError();
 
@@ -63,18 +60,12 @@ describe("Test Constructor", () => {
 
     test("doesn't throw error when called with valid params", async () => {
 
-        const carouselRoot = document.createElement('div');
-
-        let slides = [];
-
-        for (let i = 0; i < 3; i++) {
-            let newSlide = document.createElement('div');
-            slides.push(newSlide);
-        }
+        let testCarousel = getTestCarousel();
+        document.body.appendChild(testCarousel.root);
 
         expect(() => {
 
-            const testCarousel = new Carousa11y(carouselRoot, slides);
+            let testCarousa11y = new Carousa11y(testCarousel.root, testCarousel.slides);
 
         }).not.toThrowError();
 
@@ -82,7 +73,15 @@ describe("Test Constructor", () => {
 
     test("has 'nextSlide', 'previousSlide', 'goToSlide', 'play', & 'stop' methods", async () => {
 
-        let testCarousel = createTestCarousel();
+        let testCarousel = getTestCarousel();
+        document.body.appendChild(testCarousel.root);
+        let testCarousa11y = new Carousa11y(testCarousel.root, testCarousel.slides);
+
+        expect(testCarousa11y.nextSlide).toBeInstanceOf(Function);
+        expect(testCarousa11y.previousSlide).toBeInstanceOf(Function);
+        expect(testCarousa11y.goToSlide).toBeInstanceOf(Function);
+        expect(testCarousa11y.play).toBeInstanceOf(Function);
+        expect(testCarousa11y.stop).toBeInstanceOf(Function);
 
         expect(testCarousel.nextSlide).toBeInstanceOf(Function);
         expect(testCarousel.previousSlide).toBeInstanceOf(Function);
@@ -108,23 +107,27 @@ describe("Test Functionality", () => {
 
     test("only allows setting autoAdvance to number", async () => {
 
-        let testCarousel = createTestCarousel();
+        let testCarousel = getTestCarousel();
+
+        document.body.appendChild(testCarousel.root);
+
+        let testCarousa11y = new Carousa11y(testCarousel.root, testCarousel.slides);
 
         expect(() => {
 
-            testCarousel.autoAdvance = 1000;
+            testCarousa11y.autoAdvance = 1000;
 
         }).not.toThrowError();
 
         expect(() => {
 
-            testCarousel.autoAdvance = 'string';
+            testCarousa11y.autoAdvance = 'string';
 
         }).toThrowError();
 
         expect(() => {
 
-            testCarousel.autoAdvance = [];
+            testCarousa11y.autoAdvance = [];
 
         }).toThrowError();
 
@@ -133,19 +136,33 @@ describe("Test Functionality", () => {
 });
 
 /**
- * Helper function for creating a test Carousa11y while remaining DRY
- * @param {Object} options - for passing to the constructor
- * @return {Carousa11y}
+ * @typedef {Object} testCarousel
+ * @property {HTMLDivElement} root The root div element for insertion into the DOM and passing to the constructor
+ * @property {array} slides Array containing the slides for passing to the constructor
  */
-function createTestCarousel(options) {
-    const carouselRoot = document.createElement('div');
 
-    let slides = [];
+/**
+ * Helper function for creating a test Carousa11y while remaining DRY
+ * @return {testCarousel} - Object with the DOM elements for insertion + slides
+ */
+function getTestCarousel() {
+
+    let carouselRoot = document.createElement('div');
+    carouselRoot.id = 'root';
+
+    let slideList = document.createElement('ul');
 
     for (let i = 0; i < 3; i++) {
         let newSlide = document.createElement('div');
-        slides.push(newSlide);
+        newSlide.classList.add('slide');
+        slideList.appendChild(newSlide);
     }
 
-    return new Carousa11y(carouselRoot, slides, options);
+    carouselRoot.appendChild(slideList);
+
+    return {
+        root: carouselRoot,
+        slides: Array.from(carouselRoot.querySelectorAll('.slide')),
+    };
+
 }

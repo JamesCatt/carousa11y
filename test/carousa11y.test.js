@@ -91,7 +91,7 @@ describe("Test Constructor", () => {
         document.body.appendChild(testCarousel.root);
         let testCarousa11y = new Carousa11y(testCarousel.root, testCarousel.slides);
 
-        const announceElement = testCarousel.root.querySelector('#carousa11yAnnounceElement');
+        const announceElement = document.getElementById('carousa11yAnnounceElement');
         expect(announceElement).not.toBeNull();
         expect(announceElement.getAttribute('aria-live')).toBe('polite');
         expect(announceElement.getAttribute('aria-atomic')).toBe('true');
@@ -106,7 +106,7 @@ describe("Test Constructor", () => {
         document.body.appendChild(testCarousel.root);
         let testCarousa11y = new Carousa11y( testCarousel.root, testCarousel.slides, { autoCreateControls: { prevNextButtons: false } } );
 
-        const announceElement = testCarousel.root.querySelector('carousa11yAnnounceElement');
+        const announceElement = document.querySelector('carousa11yAnnounceElement');
         expect(announceElement).toBeNull();
 
     });

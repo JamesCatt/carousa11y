@@ -14,8 +14,7 @@ export default class Carousa11y {
      * @param {Number} options.autoAdvance - Number of milliseconds to wait between auto-advancing to next slide. Set 0 to disable auto-advance.
      * @param {(boolean|Object)} options.autoCreateControls - Setting false suppresses creation of any controls. Object allows suppression of specific control elements
      * @param {boolean} options.autoCreateControls.announceElement - Set false to suppress creation of an aria-live region for announcing the current slide.
-     * @param {boolean} options.autoCreateControls.prevButton - Set false to suppress creation of a 'previous slide' button.
-     * @param {boolean} options.autoCreateControls.nextButton - Set false to suppress creation of a 'next slide' button.
+     * @param {boolean} options.autoCreateControls.prevNextButtons - Set false to suppress creation of 'previous slide' and 'next slide' controls.
      * @param {boolean} options.autoCreateControls.playStopButton - Set false to suppress creation of a play/stop toggle button.
      * @param {boolean} options.autoCreateControls.slideButtons - Set false to suppress creation of a list of buttons for selecting a specific slide.
      */
@@ -59,6 +58,10 @@ export default class Carousa11y {
         // insert default controls as appropriate
         if (this.autoCreateControls.announceElement !== false) {
             this.carouselRoot.appendChild(this._createAnnounceElement());
+        }
+
+        if (this.autoCreateControls.prevNextButtons !== false) {
+            this.carouselRoot.appendChild(this._createPrevNextControls());
         }
 
     }
@@ -137,60 +140,36 @@ export default class Carousa11y {
      */
     _createPrevNextControls() {
 
-        /*let controlsElement = document.createElement('ul');
+        let controlsElement = document.createElement('ul');
         controlsElement.classList.add('c-carousa11y__controls', 'c-carousa11y__controls--prev-next');
 
-        let prevItem = document.createElement('li');
-        prevItem.classList.add('c-carousa11y__controls-item', 'c-carousa11y__controls-item--prev');
+        controlsElement.innerHTML = 
 
-        let prevButton = document.createElement('button');
-        prevButton.setAttribute('id', 'carousa11yPrevButton');
-        prevButton.classList.add('c-carousa11y__button', 'c-carousa11y__button--prev');
+            `<li class='c-carousa11y__controls-item c-carousa11y__controls-item--prev'>
 
-        prevItem.appendChild(prevButton);
-        controlsElement.appendChild(prevItem);
+                <button id='carousa11yPrevButton' class='c-carousa11y__button c-carousa11y__button--prev'>
 
-        let nextItem = document.createElement('li');
-        nextItem.classList.add('c-carousa11y__controls-item', 'c-carousa11y__controls-item--next');
+                    <span class='u-display--screenreader-only'>Go to previous slide</span>
 
-        let nextButton = document.createElement('button');
-        nextButton.setAttribute('id', 'carousa11yNextButton');
-        nextButton.classList.add('c-carousa11y__button', 'c-carousa11y__button--next');
+                    <!-- Zondicons by Steve Schroger - http://www.zondicons.com/ -->
+                    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' class='c-carousa11y__button-icon' aria-hidden='true' role='presentation'><path d='M7.05 9.293L6.343 10 12 15.657l1.414-1.414L9.172 10l4.242-4.243L12 4.343z'/></svg>
 
-        nextItem.appendChild(nextButton);
-        controlsElement.appendChild(nextItem);*/
+                </button>
 
-        const controlsElement = 
+            </li>
 
-            `<ul class='c-carousa11y__controls c-carousa11y__controls--prev-next'>
+            <li class='c-carousa11y__controls-item c-carousa11y__controls-item--next'>
 
-                <li class='c-carousa11y__controls-item c-carousa11y__controls-item--prev'>
+                <button id='carousa11yNextButton' class='c-carousa11y__button c-carousa11y__button--next'>
 
-                    <button id='carousa11yPrevButton' class='c-carousa11y__button c-carousa11y__button--prev'>
+                    <span class='u-display--screenreader-only'>Go to next slide</span>
 
-                        <span class='u-display--screenreader-only'>Go to previous slide</span>
+                    <!-- Zondicons by Steve Schroger - http://www.zondicons.com/ -->
+                    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' class='c-carousa11y__button-icon' aria-hidden='true' role='presentation'><path d='M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z'/></svg>
 
-                        <!-- Zondicons by Steve Schroger - http://www.zondicons.com/ -->
-                        <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' class='c-carousa11y__button-icon' aria-hidden='true' role='presentation'><path d='M7.05 9.293L6.343 10 12 15.657l1.414-1.414L9.172 10l4.242-4.243L12 4.343z'/></svg>
+                </button>
 
-                    </button>
-
-                </li>
-
-                <li class='c-carousa11y__controls-item c-carousa11y__controls-item--next'>
-
-                    <button id='carousa11yNextButton' class='c-carousa11y__button c-carousa11y__button--next'>
-
-                        <span class='u-display--screenreader-only'>Go to next slide</span>
-
-                        <!-- Zondicons by Steve Schroger - http://www.zondicons.com/ -->
-                        <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' class='c-carousa11y__button-icon' aria-hidden='true' role='presentation'><path d='M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z'/></svg>
-
-                    </button>
-
-                </li>
-
-            </ul>`;
+            </li>`;
 
         return controlsElement;
     }

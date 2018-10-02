@@ -111,6 +111,28 @@ describe("Test Constructor", () => {
 
     });
 
+    test("appends prev/next controls to carouselRoot by default", async () => {
+
+        let testCarousel = getTestCarousel();
+        document.body.appendChild(testCarousel.root);
+        let testCarousa11y = new Carousa11y(testCarousel.root, testCarousel.slides);
+
+        expect(testCarousel.root.querySelector('#carousa11yPrevButton')).not.toBeNull();
+        expect(testCarousel.root.querySelector('#carousa11yNextButton')).not.toBeNull();
+
+    });
+
+    test("doesn't append prev/next controls to carouselRoot when option set", async () => {
+
+        let testCarousel = getTestCarousel();
+        document.body.appendChild(testCarousel.root);
+        let testCarousa11y = new Carousa11y(testCarousel.root, testCarousel.slides, { autoCreateControls: { prevNextButtons: false } });
+
+        expect(testCarousel.root.querySelector('#carousa11yPrevButton')).toBeNull();
+        expect(testCarousel.root.querySelector('#carousa11yNextButton')).toBeNull();
+
+    });
+
     /* Tests to add:
     * - currentSlide getter method returns correct index
     */

@@ -83,11 +83,20 @@ describe("Test Constructor", () => {
         expect(testCarousa11y.play).toBeInstanceOf(Function);
         expect(testCarousa11y.stop).toBeInstanceOf(Function);
 
-        expect(testCarousel.nextSlide).toBeInstanceOf(Function);
-        expect(testCarousel.previousSlide).toBeInstanceOf(Function);
-        expect(testCarousel.goToSlide).toBeInstanceOf(Function);
-        expect(testCarousel.play).toBeInstanceOf(Function);
-        expect(testCarousel.stop).toBeInstanceOf(Function);
+    });
+
+    test("appends aria-live announce element to carouselRoot by default", async () => {
+
+        let testCarousel = getTestCarousel();
+        document.body.appendChild(testCarousel.root);
+        let testCarousa11y = new Carousa11y(testCarousel.root, testCarousel.slides);
+
+        const announceElement = document.getElementById('carousa11yAnnounceElement');
+        expect(announceElement).not.toBeNull();
+        expect(announceElement.getAttribute('aria-live')).toBe('polite');
+        expect(announceElement.getAttribute('aria-atomic')).toBe('true');
+        expect(announceElement.classList.contains('c-carousa11y__announce')).toBe(true);
+        expect(announceElement.classList.contains('u-display--screenreader-only')).toBe(true);
 
     });
 

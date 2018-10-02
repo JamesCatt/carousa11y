@@ -78,16 +78,7 @@ describe("Test Constructor", () => {
 
     test("has 'nextSlide', 'previousSlide', 'goToSlide', 'play', & 'stop' methods", async () => {
 
-        const carouselRoot = document.createElement('div');
-
-        let slides = [];
-
-        for (let i = 0; i < 3; i++) {
-            let newSlide = document.createElement('div');
-            slides.push(newSlide);
-        }
-
-        const testCarousel = new Carousa11y(carouselRoot, slides);
+        let testCarousel = createTestCarousel();
 
         expect(testCarousel.nextSlide).toBeInstanceOf(Function);
         expect(testCarousel.previousSlide).toBeInstanceOf(Function);
@@ -109,16 +100,7 @@ describe("Test Functionality", () => {
 
     test("only allows setting autoAdvance to number", async () => {
 
-        const carouselRoot = document.createElement('div');
-
-        let slides = [];
-
-        for (let i = 0; i < 3; i++) {
-            let newSlide = document.createElement('div');
-            slides.push(newSlide);
-        }
-
-        let testCarousel = new Carousa11y(carouselRoot, slides);
+        let testCarousel = createTestCarousel();
 
         expect(() => {
 
@@ -141,3 +123,21 @@ describe("Test Functionality", () => {
     });
 
 });
+
+/**
+ * Helper function for creating a test Carousa11y while remaining DRY
+ * @param {Object} options - for passing to the constructor
+ * @return {Carousa11y}
+ */
+function createTestCarousel(options) {
+    const carouselRoot = document.createElement('div');
+
+    let slides = [];
+
+    for (let i = 0; i < 3; i++) {
+        let newSlide = document.createElement('div');
+        slides.push(newSlide);
+    }
+
+    return new Carousa11y(carouselRoot, slides, options);
+}

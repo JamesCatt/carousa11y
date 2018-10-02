@@ -100,6 +100,17 @@ describe("Test Constructor", () => {
 
     });
 
+    test("doesn't append aria-live announce element to carouselRoot when option set", async () => {
+
+        let testCarousel = getTestCarousel();
+        document.body.appendChild(testCarousel.root);
+        let testCarousa11y = new Carousa11y( testCarousel.root, testCarousel.slides, { autoCreateControls: { prevNextButtons: false } } );
+
+        const announceElement = document.querySelector('carousa11yAnnounceElement');
+        expect(announceElement).toBeNull();
+
+    });
+
     /* Tests to add:
     * - currentSlide getter method returns correct index
     */

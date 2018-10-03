@@ -213,31 +213,31 @@ export default class Carousa11y {
 
         controlsElement.innerHTML = 
 
-            `<li class='c-carousa11y__controls-item c-carousa11y__controls-item--prev'>
+            "<li class='c-carousa11y__controls-item c-carousa11y__controls-item--prev'>" +
 
-                <button id='carousa11yPrevButton' class='c-carousa11y__button c-carousa11y__button--prev'>
+                "<button id='carousa11yPrevButton' class='c-carousa11y__button c-carousa11y__button--prev'>" +
 
-                    <span class='u-display--screenreader-only'>Go to previous slide</span>
+                    "<span class='u-display--screenreader-only'>Go to previous slide</span>" +
 
-                    <!-- Zondicons by Steve Schroger - http://www.zondicons.com/ -->
-                    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' class='c-carousa11y__button-icon' aria-hidden='true' role='presentation'><path d='M7.05 9.293L6.343 10 12 15.657l1.414-1.414L9.172 10l4.242-4.243L12 4.343z'/></svg>
+                    "<!-- Zondicons by Steve Schroger - http://www.zondicons.com/ -->" +
+                    "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' class='c-carousa11y__button-icon' aria-hidden='true' role='presentation'><path d='M7.05 9.293L6.343 10 12 15.657l1.414-1.414L9.172 10l4.242-4.243L12 4.343z'/></svg>" +
 
-                </button>
+                "</button>" +
 
-            </li>
+            "</li>" +
 
-            <li class='c-carousa11y__controls-item c-carousa11y__controls-item--next'>
+            "<li class='c-carousa11y__controls-item c-carousa11y__controls-item--next'>" +
 
-                <button id='carousa11yNextButton' class='c-carousa11y__button c-carousa11y__button--next'>
+                "<button id='carousa11yNextButton' class='c-carousa11y__button c-carousa11y__button--next'>" +
 
-                    <span class='u-display--screenreader-only'>Go to next slide</span>
+                    "<span class='u-display--screenreader-only'>Go to next slide</span>" +
 
-                    <!-- Zondicons by Steve Schroger - http://www.zondicons.com/ -->
-                    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' class='c-carousa11y__button-icon' aria-hidden='true' role='presentation'><path d='M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z'/></svg>
+                    "<!-- Zondicons by Steve Schroger - http://www.zondicons.com/ -->" +
+                    "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' class='c-carousa11y__button-icon' aria-hidden='true' role='presentation'><path d='M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z'/></svg>" +
 
-                </button>
+                "</button>" +
 
-            </li>`;
+            "</li>";
 
         return controlsElement;
     }
@@ -253,13 +253,11 @@ export default class Carousa11y {
         playStopButton.setAttribute('aria-label', currentlyPlaying === true ? 'Stop' : 'Play');
         playStopButton.dataset.state = currentlyPlaying === true ? 'playing' : 'stopped';
         playStopButton.className = 'c-carousa11y__button c-carousa11y__button--play-stop';
-        playStopButton.innerHTML = `
+        playStopButton.innerHTML = 
 
-            <!-- Zondicons by Steve Shroger - http://www.zondicons.com/ -->
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="c-carousa11y__button-icon c-carousa11y__button-icon--play" aria-hidden="true" role="presentation"><path d="M4 4l12 6-12 6z"/></svg>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="c-carousa11y__button-icon c-carousa11y__button-icon--pause" aria-hidden="true" role="presentation"><path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zM7 6v8h2V6H7zm4 0v8h2V6h-2z"/></svg>
-            
-        `;
+            '<!-- Zondicons by Steve Shroger - http://www.zondicons.com/ -->' +
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="c-carousa11y__button-icon c-carousa11y__button-icon--play" aria-hidden="true" role="presentation"><path d="M4 4l12 6-12 6z"/></svg>' +
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="c-carousa11y__button-icon c-carousa11y__button-icon--pause" aria-hidden="true" role="presentation"><path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zM7 6v8h2V6H7zm4 0v8h2V6h-2z"/></svg>';
 
         return playStopButton;
 
@@ -282,11 +280,7 @@ export default class Carousa11y {
             let goToSlideButton = document.createElement('button');
             goToSlideButton.classList.add('c-carousa11y__button', 'c-carousa11y__button--go-to-slide');
             goToSlideButton.dataset.slideButton = i;
-            goToSlideButton.innerHTML = `
-            
-                <span class="u-display--screenreader-only">Go to slide ${i + 1}</span>
-            
-            `;
+            goToSlideButton.innerHTML = `<span class="u-display--screenreader-only">Go to slide ${i + 1}</span>`;
 
             if (i === this._currentSlide) {
                 goToSlideButton.setAttribute('aria-current', 'true');

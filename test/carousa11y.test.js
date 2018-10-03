@@ -58,6 +58,32 @@ describe("Test Constructor", () => {
 
     });
 
+    test('throws error when called with invalid options.transitionTime', () => {
+
+        let testCarousel = getTestCarousel();
+        document.body.appendChild(testCarousel.root);
+
+        expect(() => {
+
+            let testCarousa11y = new Carousa11y(testCarousel.root, testCarousel.slides, { transitionTime: 'string' });
+
+        }).toThrowError();
+        
+    });
+
+    test('doesnt throw error when called with valid options.transitionTime', () => {
+
+        let testCarousel = getTestCarousel();
+        document.body.appendChild(testCarousel.root);
+
+        expect(() => {
+
+            let testCarousa11y = new Carousa11y(testCarousel.root, testCarousel.slides, { transitionTime: 100 });
+
+        }).not.toThrowError();
+        
+    });
+
     test("doesn't throw error when called with valid params", async () => {
 
         let testCarousel = getTestCarousel();
@@ -212,6 +238,34 @@ describe("Test Functionality", () => {
         expect(() => {
 
             testCarousa11y.autoAdvanceTime = [];
+
+        }).toThrowError();
+
+    });
+
+    test("only allows setting transitionTime to number", async () => {
+
+        let testCarousel = getTestCarousel();
+
+        document.body.appendChild(testCarousel.root);
+
+        let testCarousa11y = new Carousa11y(testCarousel.root, testCarousel.slides);
+
+        expect(() => {
+
+            testCarousa11y.transitionTime = 1000;
+
+        }).not.toThrowError();
+
+        expect(() => {
+
+            testCarousa11y.transitionTime = 'string';
+
+        }).toThrowError();
+
+        expect(() => {
+
+            testCarousa11y.transitionTime = [];
 
         }).toThrowError();
 

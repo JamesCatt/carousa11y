@@ -12,6 +12,7 @@ export default class Carousa11y {
      * @param {Array.<HTMLElement>} carouselSlides - The slides for inclusion in the carousel
      * @param {Object} options - Options container
      * @param {Number} options.autoAdvanceTime - Number of milliseconds to wait between auto-advancing to next slide. Set 0 to disable auto-advance.
+     * @param {Number} options.transitionTime - Number of milliseconds to allow for CSS transitions between slides.
      * @param {(boolean|Object)} options.autoCreateControls - Setting false suppresses creation of any controls. Object allows suppression of specific control elements
      * @param {boolean} options.autoCreateControls.announceElement - Set false to suppress creation of an aria-live region for announcing the current slide.
      * @param {boolean} options.autoCreateControls.prevNextButtons - Set false to suppress creation of 'previous slide' and 'next slide' controls.
@@ -24,6 +25,7 @@ export default class Carousa11y {
         carouselSlides,
         { // default options
             autoAdvanceTime = 5000,
+            transitionTime = 300,
             autoCreateControls = {},
         } = {}
 
@@ -48,13 +50,16 @@ export default class Carousa11y {
         });
 
         // validate options
-        //console.log(autoAdvanceTime);
+        if (typeof transitionTime !== 'number') {
+            throw new Error('options.transitionTime must be a number.');
+        }
 
         // validation tests passed, proceed with instantiation
         this.carouselRoot = carouselRoot;
         this.carouselSlides = carouselSlides;
         this.autoCreateControls = autoCreateControls;
         this.autoAdvanceTime = autoAdvanceTime; // note that validity checking of autoAdvanceTime value will be handled by the autoAdvanceTime setter method
+        this.transitionTime = transitionTime;
 
         // Private properties
         this._playing = this.autoAdvanceTime !== 0;
@@ -129,7 +134,7 @@ export default class Carousa11y {
      */
     set autoAdvanceTime(duration) {
         if (typeof duration !== 'number') {
-            throw new Error('autoAdvanceTime must be set to an integer (milliseconds).');
+            throw new Error('autoAdvanceTime must be set to an number (milliseconds).');
         }
         this._autoAdvanceTime = duration;
     }
@@ -140,6 +145,24 @@ export default class Carousa11y {
      */
     get autoAdvanceTime() {
         return this._autoAdvanceTime;
+    }
+
+    /**
+     * @param {number} duration - number of milliseconds to allow for CSS transitions between slides
+     */
+    set transitionTime(duration) {
+        if (typeof duration !== 'number') {
+            throw new Error('transitionTime must be set to an number (milliseconds).');
+        }
+        this._transitionTime = duration;        
+    }
+
+    /**
+     * Get the current slide transition time
+     * @returns {number}
+     */
+    get transitionTime() {
+        return this._transitionTime;
     }
 
     // Control creation methods

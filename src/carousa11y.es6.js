@@ -49,17 +49,12 @@ export default class Carousa11y {
 
         });
 
-        // validate options
-        if (typeof transitionTime !== 'number') {
-            throw new Error('options.transitionTime must be a number.');
-        }
-
         // validation tests passed, proceed with instantiation
         this.carouselRoot = carouselRoot;
         this.carouselSlides = carouselSlides;
         this.autoCreateControls = autoCreateControls;
         this.autoAdvanceTime = autoAdvanceTime; // note that validity checking of autoAdvanceTime value will be handled by the autoAdvanceTime setter method
-        this.transitionTime = transitionTime;
+        this.transitionTime = transitionTime; // note that validity checking of transitionTime value will be handled by the transitionTime setter method
 
         // Private properties
         this._playing = this.autoAdvanceTime !== 0;

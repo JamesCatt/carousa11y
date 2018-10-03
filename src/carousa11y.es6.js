@@ -160,6 +160,14 @@ export default class Carousa11y {
         return this._transitionTime;
     }
 
+    // Private methods
+    /**
+     * 
+     */
+    _autoAdvance() {
+
+    }
+
     // Control creation methods
 
     /**

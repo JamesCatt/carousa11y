@@ -84,6 +84,26 @@ export default class Carousa11y {
      */
     nextSlide() {
 
+        const incomingSlide = this._currentSlide === this.carouselSlides.length ? this.carouselSlides[0] : this.carouselSlides(this._currentSlide + 1);
+        const outgoingSlide = this.carouselSlides(this._currentSlide);
+
+        outgoingSlide.classList.add('s-carousa11y--previous');
+        incomingSlide.classList.add('s-carousa11y--current');
+
+        let newNextSlide;
+
+        if (this.carouselSlides.length >= 3) {
+            newNextSlide = this._currentSlide + 1 === this.carouselSlides.length ? this.carouselSlides[0] : this.carouselSlides(this._currentSlide + 2);
+        } else {
+            newNextSlide = outgoingSlide;
+        }
+
+        setTimeout(() => {
+            outgoingSlide.setAttribute('aria-hidden', 'true');
+            incomingSlide.removeAttribute('aria-hidden');
+            newNextSlide.classList.add('s-carousa11y--next');
+        }, this.transitionTime);
+
     }
 
     /**

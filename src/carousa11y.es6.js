@@ -87,7 +87,7 @@ export default class Carousa11y {
             const slideButtons = Array.from(document.getElementsByClassName('c-carousa11y__button--go-to-slide'));
             slideButtons.forEach(slideButton => {
                 slideButton.addEventListener('click', e => {
-                    this.goToSlide(e.currentTarget.dataset.slideButton);
+                    this.goToSlide(e.currentTarget.dataset.slideButton, null, true);
                 });
             });
         }
@@ -98,22 +98,22 @@ export default class Carousa11y {
      * Go to the next slide
      */
     goToNextSlide() {
-        this._goToSlide(this.nextSlideIndex, true);
+        this._goToSlide(this.nextSlideIndex, true, false);
     }
 
     /**
      * Go to the previous slide
      */
     goToPreviousSlide() {
-        this._goToSlide(this.previousSlideIndex, false);
+        this._goToSlide(this.previousSlideIndex, false, false);
     }
 
     /**
      * Go to a specific slide
      * @param {Number} slideNumber - Number of the slide to go to, not zero-indexed (i.e., first slide === 1).
      */
-    goToSlide(slideNumber) {
-        this._goToSlide(slideNumber - 1);
+    goToSlide(slideNumber, directionIsForwards, setFocus) {
+        this._goToSlide(slideNumber - 1, directionIsForwards, setFocus);
     }
 
     /**
@@ -231,7 +231,7 @@ export default class Carousa11y {
      * @param {number} slideIndex - The zero-indexed number for the slide to advance to
      * @param {boolean} directionIsForwards - true if the carousel should behave as advancing in a forwards (i.e., rightward) direction, default is based on comparing the indices of the new slide and existing current slide
      */
-    _goToSlide(slideIndex, directionIsForwards = slideIndex > this.currentSlideIndex) {
+    _goToSlide(slideIndex, directionIsForwards = slideIndex > this.currentSlideIndex, setFocus = false) {
 
         if (slideIndex >= this.carouselSlides.length || slideIndex < 0) {
             throw new Error(`invalid slide index: ${slideIndex}`);
@@ -282,6 +282,11 @@ export default class Carousa11y {
                 newPreviousSlide.classList.add('s-carousa11y__slide--previous');
             }, this.transitionTime);
 
+        }
+
+        if (setFocus) {
+            incomingSlide.setAttribute('tabindex', '-1');
+            incomingSlide.focus();
         }
 
     }

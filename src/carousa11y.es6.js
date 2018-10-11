@@ -224,7 +224,7 @@ export default class Carousa11y {
      * 
      * @param {number} slideIndex - The zero-indexed number for the slide to advance to
      */
-    _goToSlide(slideIndex, directionIsForwards) {
+    _goToSlide(slideIndex, directionIsForwards = slideIndex > this.currentSlideIndex) {
 
         if (slideIndex >= this.carouselSlides.length || slideIndex < 0) {
             throw new Error(`invalid slide index: ${slideIndex}`);
@@ -233,8 +233,6 @@ export default class Carousa11y {
         if (slideIndex === this.currentSlideIndex) {
             return;
         }
-
-        directionIsForwards = typeof directionIsForwards === 'null' ? directionIsForwards = slideIndex > this.currentSlideIndex : directionIsForwards;
 
         // set these before updating _currentSlideIndex
         const oldPreviousSlide = this.carouselSlides[this.previousSlideIndex];

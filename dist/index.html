@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+    <head>
+
+        <title>Carousa11y Test</title>
+
+        <script src="/assets/carousa11y.min.js"></script>
+
+        <link rel="stylesheet" href="/assets/carousa11y.css">
+
+    </head>
+    <body>
+
+        <h1>Carousa11y Test</h1>
+
+        <div id="root" class="c-carousa11y">
+            <ul class="c-carousa11y__list">
+                <li class="c-carousa11y__slide"><img src="https://placehold.it/400x200?text=Slide%201" alt=""></li>
+                <li class="c-carousa11y__slide"><img src="https://placehold.it/400x200?text=Slide%202" alt=""></li>
+                <li class="c-carousa11y__slide"><img src="https://placehold.it/400x200?text=Slide%203" alt=""></li>
+            </ul>
+        </div>
+
+        <script>
+        
+            var root = document.getElementById('root');
+            var slides = [].slice.call(document.getElementsByClassName('c-carousa11y__slide'));
+            var options = {
+
+            };
+
+            var carousel = new Carousa11y(root, slides);
+        
+        </script>
+
+</body>
+</html>

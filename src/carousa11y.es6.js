@@ -223,6 +223,7 @@ export default class Carousa11y {
     /**
      * 
      * @param {number} slideIndex - The zero-indexed number for the slide to advance to
+     * @param {boolean} directionIsForwards - true if the carousel should behave as advancing in a forwards (i.e., rightward) direction, default is based on comparing the indices of the new slide and existing current slide
      */
     _goToSlide(slideIndex, directionIsForwards = slideIndex > this.currentSlideIndex) {
 

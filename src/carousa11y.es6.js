@@ -84,6 +84,12 @@ export default class Carousa11y {
 
         if (this.autoCreateControls.slideButtons !== false) {
             this.carouselRoot.appendChild(this._createGoToSlideControls(this.carouselSlides.length));
+            const slideButtons = Array.from(document.getElementsByClassName('c-carousa11y__button--go-to-slide'));
+            slideButtons.forEach(slideButton => {
+                slideButton.addEventListener('click', e => {
+                    this.goToSlide(e.currentTarget.dataset.slideButton);
+                });
+            });
         }
 
     }
@@ -371,7 +377,7 @@ export default class Carousa11y {
 
             let goToSlideButton = document.createElement('button');
             goToSlideButton.classList.add('c-carousa11y__button', 'c-carousa11y__button--go-to-slide');
-            goToSlideButton.dataset.slideButton = i;
+            goToSlideButton.dataset.slideButton = i + 1;
             goToSlideButton.innerHTML = `<span class="u-display--screenreader-only">Go to slide ${i + 1}</span>`;
 
             if (i === this._currentSlide) {

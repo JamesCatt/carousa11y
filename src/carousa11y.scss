@@ -1,0 +1,30 @@
+body {
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+.c-carousa11y__list {
+    list-style: none;
+    overflow: hidden;
+    padding: 0;
+    position: relative;
+    width: 400px;
+    height: 200px;
+}
+
+.c-carousa11y__slide {
+    transition: transform .3s ease 0s;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    &.s-carousa11y__slide--next {
+        transform: translateX(100%);
+        visibility: hidden;
+    }
+
+    &.s-carousa11y__slide--previous {
+        transform: translateX(-100%);
+        visibility: hidden;
+        transition: transform .3s ease 0s, visibility 0s linear .3s;
+    }
+}

@@ -4,6 +4,8 @@
  * License: ?
  */
 
+import './carousa11y.scss';
+
 export default class Carousa11y {
     
     /**

@@ -12,19 +12,24 @@ body {
 }
 
 .c-carousa11y__slide {
-    transition: transform .3s ease 0s;
+    transition: transform .3s ease 0s, visibility 0s linear .3s;
     position: absolute;
     top: 0;
     left: 0;
+    visibility: hidden;
 
     &.s-carousa11y__slide--next {
         transform: translateX(100%);
-        visibility: hidden;
     }
 
     &.s-carousa11y__slide--previous {
         transform: translateX(-100%);
-        visibility: hidden;
-        transition: transform .3s ease 0s, visibility 0s linear .3s;
+    }
+
+    &.s-carousa11y__slide--current {
+        transform: none;
+        transition: transform .3s ease 0s;
+        visibility: visible;
+        z-index: 10000;
     }
 }

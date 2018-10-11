@@ -39,8 +39,8 @@ export default class Carousa11y {
         }
 
         // validate carouselSlides
-        if (carouselSlides instanceof Array !== true || carouselSlides.length == 0) {
-            throw new Error('carouselSlides must be a non-empty array.');
+        if (carouselSlides instanceof Array !== true || carouselSlides.length < 2) {
+            throw new Error('carouselSlides must be an array with at least 2 HTMLElements.');
         }
 
         carouselSlides.forEach(slide => {
@@ -60,7 +60,12 @@ export default class Carousa11y {
 
         // Private properties
         this._playing = this.autoAdvanceTime !== 0;
-        this._currentSlide = 0;
+        this._currentSlideIndex = 0;
+
+        // Set appropriate starting CSS classes on slides
+        this.carouselSlides[this.currentSlideIndex].classList.add('s-carousa11y__slide--current');
+        this.carouselSlides[this.nextSlideIndex].classList.add('s-carousa11y__slide--next');
+        this.carouselSlides[this.previousSlideIndex].classList.add('s-carousa11y__slide--previous');
 
         // insert default controls as appropriate
         if (this.autoCreateControls.announceElement !== false) {
@@ -69,6 +74,8 @@ export default class Carousa11y {
 
         if (this.autoCreateControls.prevNextButtons !== false) {
             this.carouselRoot.appendChild(this._createPrevNextControls());
+            document.getElementById('carousa11yNextButton').addEventListener('click', () => {this.goToNextSlide();});
+            document.getElementById('carousa11yPrevButton').addEventListener('click', () => {this.goToPreviousSlide();});
         }
 
         if (this.autoCreateControls.playStopButton !== false) {
@@ -84,43 +91,23 @@ export default class Carousa11y {
     /**
      * Go to the next slide
      */
-    nextSlide() {
-
-        const incomingSlide = this._currentSlide === this.carouselSlides.length ? this.carouselSlides[0] : this.carouselSlides(this._currentSlide + 1);
-        const outgoingSlide = this.carouselSlides(this._currentSlide);
-
-        outgoingSlide.classList.add('s-carousa11y--previous');
-        incomingSlide.classList.add('s-carousa11y--current');
-
-        let newNextSlide;
-
-        if (this.carouselSlides.length >= 3) {
-            newNextSlide = this._currentSlide + 1 === this.carouselSlides.length ? this.carouselSlides[0] : this.carouselSlides(this._currentSlide + 2);
-        } else {
-            newNextSlide = outgoingSlide;
-        }
-
-        setTimeout(() => {
-            outgoingSlide.setAttribute('aria-hidden', 'true');
-            incomingSlide.removeAttribute('aria-hidden');
-            newNextSlide.classList.add('s-carousa11y--next');
-        }, this.transitionTime);
-
+    goToNextSlide() {
+        this._goToSlide(this.nextSlideIndex, true);
     }
 
     /**
      * Go to the previous slide
      */
-    previousSlide() {
-
+    goToPreviousSlide() {
+        this._goToSlide(this.previousSlideIndex, false);
     }
 
     /**
      * Go to a specific slide
-     * @param {Number} slideIndex - Index of the slide to go to.
+     * @param {Number} slideNumber - Number of the slide to go to, not zero-indexed (i.e., first slide === 1).
      */
-    goToSlide(slideIndex) {
-
+    goToSlide(slideNumber) {
+        this._goToSlide(slideNumber - 1);
     }
 
     /**
@@ -138,10 +125,53 @@ export default class Carousa11y {
     }
 
     /**
-     * Get the currently-displayed slide
-     * @return {number} - index of the currently-displayed slide
+     * Get the non-zero-indexed number of the currently-displayed slide
+     * @return {number} - non zero-indexed number of the currently-displayed slide
      */
     get currentSlide() {
+        return this._currentSlideIndex + 1;
+    }
+
+    /**
+     * Prevents setting of the current slide directly
+     */
+    set currentSlide(slideNumber) {
+        throw new Error('currentSlide cannot be set directly. Use goToSlide(slideNumber) instead.');
+    }
+
+    /**
+     * Get the zero-indexed number for the current slide
+     * @return {number}
+     */
+    get currentSlideIndex() {
+        return this._currentSlideIndex;
+    }
+
+    /**
+     * Get the zero-indexed number of the next slide from the current one
+     * @return {number}
+     */
+    get nextSlideIndex() {
+        
+        if (this.currentSlideIndex < this.carouselSlides.length - 1) {
+            return this.currentSlideIndex + 1;
+        } else {
+            return 0;
+        }
+
+    }
+
+    /**
+     * Get the zero-indexed number of the previous slide from the current one
+     * @return {number}
+     */
+    get previousSlideIndex() {
+        
+        if (this.currentSlideIndex === 0) {
+            return this.carouselSlides.length - 1;
+        } else {
+            return this.currentSlideIndex - 1;
+        }
 
     }
 
@@ -187,6 +217,67 @@ export default class Carousa11y {
      * 
      */
     _autoAdvance() {
+
+    }
+
+    /**
+     * 
+     * @param {number} slideIndex - The zero-indexed number for the slide to advance to
+     */
+    _goToSlide(slideIndex, directionIsForwards) {
+
+        if (slideIndex >= this.carouselSlides.length || slideIndex < 0) {
+            throw new Error(`invalid slide index: ${slideIndex}`);
+        }
+
+        if (slideIndex === this.currentSlideIndex) {
+            return;
+        }
+
+        directionIsForwards = typeof directionIsForwards === 'null' ? directionIsForwards = slideIndex > this.currentSlideIndex : directionIsForwards;
+
+        // set these before updating _currentSlideIndex
+        const oldPreviousSlide = this.carouselSlides[this.previousSlideIndex];
+        const oldNextSlide = this.carouselSlides[this.nextSlideIndex];
+        const outgoingSlide = this.carouselSlides[this._currentSlideIndex]
+
+        this._currentSlideIndex = slideIndex;
+
+        const incomingSlide = this.carouselSlides[slideIndex];
+
+        if (directionIsForwards) {
+
+            const newNextSlide = this.carouselSlides[this.nextSlideIndex];
+            outgoingSlide.classList.add('s-carousa11y__slide--previous');
+            incomingSlide.classList.add('s-carousa11y__slide--current');
+            outgoingSlide.classList.remove('s-carousa11y__slide--current');
+            
+            setTimeout(() => {
+                outgoingSlide.setAttribute('aria-hidden', 'true');
+                incomingSlide.removeAttribute('aria-hidden');
+                incomingSlide.classList.remove('s-carousa11y__slide--next');
+                incomingSlide.classList.remove('s-carousa11y__slide--previous');
+                oldPreviousSlide.classList.remove('s-carousa11y__slide--previous');
+                newNextSlide.classList.add('s-carousa11y__slide--next');
+            }, this.transitionTime);
+
+        } else {
+
+            const newPreviousSlide = this.carouselSlides[this.previousSlideIndex];
+            outgoingSlide.classList.add('s-carousa11y__slide--next');
+            incomingSlide.classList.add('s-carousa11y__slide--current');
+            outgoingSlide.classList.remove('s-carousa11y__slide--current');
+            
+            setTimeout(() => {
+                outgoingSlide.setAttribute('aria-hidden', 'true');
+                incomingSlide.removeAttribute('aria-hidden');
+                incomingSlide.classList.remove('s-carousa11y__slide--next');
+                incomingSlide.classList.remove('s-carousa11y__slide--previous');
+                oldNextSlide.classList.remove('s-carousa11y__slide--next');
+                newPreviousSlide.classList.add('s-carousa11y__slide--previous');
+            }, this.transitionTime);
+
+        }
 
     }
 

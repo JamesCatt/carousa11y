@@ -32,4 +32,12 @@ body {
         visibility: visible;
         z-index: 10000;
     }
+
+    &.u-carousa11y__slide--notransitiontime {
+        transition-duration: 0s !important;
+    }
+}
+
+.c-carousa11y__button {
+    width: 2rem;
 }

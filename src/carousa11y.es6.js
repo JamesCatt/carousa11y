@@ -98,7 +98,7 @@ export default class Carousa11y {
      * Go to the next slide
      */
     goToNextSlide() {
-        this._goToSlide(this.nextSlideIndex, true, false);
+        this._goToSlide(this.nextSlideIndex, false, true);
     }
 
     /**
@@ -112,8 +112,8 @@ export default class Carousa11y {
      * Go to a specific slide
      * @param {Number} slideNumber - Number of the slide to go to, not zero-indexed (i.e., first slide === 1).
      */
-    goToSlide(slideNumber, directionIsForwards, setFocus) {
-        this._goToSlide(slideNumber - 1, directionIsForwards, setFocus);
+    goToSlide(slideNumber, setFocus, directionIsForwards) {
+        this._goToSlide(slideNumber - 1, setFocus), directionIsForwards;
     }
 
     /**
@@ -231,8 +231,8 @@ export default class Carousa11y {
      * @param {number} slideIndex - The zero-indexed number for the slide to advance to
      * @param {boolean} directionIsForwards - true if the carousel should behave as advancing in a forwards (i.e., rightward) direction, default is based on comparing the indices of the new slide and existing current slide
      */
-    _goToSlide(slideIndex, directionIsForwards = slideIndex > this.currentSlideIndex, setFocus = false) {
-
+    _goToSlide(slideIndex, setFocus = false, directionIsForwards = slideIndex > this.currentSlideIndex) {
+        
         if (slideIndex >= this.carouselSlides.length || slideIndex < 0) {
             throw new Error(`invalid slide index: ${slideIndex}`);
         }
@@ -244,50 +244,58 @@ export default class Carousa11y {
         // set these before updating _currentSlideIndex
         const oldPreviousSlide = this.carouselSlides[this.previousSlideIndex];
         const oldNextSlide = this.carouselSlides[this.nextSlideIndex];
-        const outgoingSlide = this.carouselSlides[this._currentSlideIndex]
+        const oldCurrentSlide = this.carouselSlides[this._currentSlideIndex]
 
         this._currentSlideIndex = slideIndex;
 
-        const incomingSlide = this.carouselSlides[slideIndex];
+        const newCurrentSlide = this.carouselSlides[slideIndex];
+        const newNextSlide = this.carouselSlides[this.nextSlideIndex];
+        const newPreviousSlide = this.carouselSlides[this.previousSlideIndex];
+
+        newCurrentSlide.classList.add('u-carousa11y__slide--notransitiontime');
 
         if (directionIsForwards) {
 
-            const newNextSlide = this.carouselSlides[this.nextSlideIndex];
-            outgoingSlide.classList.add('s-carousa11y__slide--previous');
-            incomingSlide.classList.add('s-carousa11y__slide--current');
-            outgoingSlide.classList.remove('s-carousa11y__slide--current');
-            
-            setTimeout(() => {
-                outgoingSlide.setAttribute('aria-hidden', 'true');
-                incomingSlide.removeAttribute('aria-hidden');
-                incomingSlide.classList.remove('s-carousa11y__slide--next');
-                incomingSlide.classList.remove('s-carousa11y__slide--previous');
-                oldPreviousSlide.classList.remove('s-carousa11y__slide--previous');
-                newNextSlide.classList.add('s-carousa11y__slide--next');
-            }, this.transitionTime);
+            newCurrentSlide.classList.add('s-carousa11y__slide--next');
+            newCurrentSlide.classList.remove('s-carousa11y__slide--previous');
 
         } else {
 
-            const newPreviousSlide = this.carouselSlides[this.previousSlideIndex];
-            outgoingSlide.classList.add('s-carousa11y__slide--next');
-            incomingSlide.classList.add('s-carousa11y__slide--current');
-            outgoingSlide.classList.remove('s-carousa11y__slide--current');
+            newCurrentSlide.classList.add('s-carousa11y__slide--previous');
+            newCurrentSlide.classList.remove('s-carousa11y__slide--next');
             
-            setTimeout(() => {
-                outgoingSlide.setAttribute('aria-hidden', 'true');
-                incomingSlide.removeAttribute('aria-hidden');
-                incomingSlide.classList.remove('s-carousa11y__slide--next');
-                incomingSlide.classList.remove('s-carousa11y__slide--previous');
-                oldNextSlide.classList.remove('s-carousa11y__slide--next');
-                newPreviousSlide.classList.add('s-carousa11y__slide--previous');
-            }, this.transitionTime);
-
         }
 
-        if (setFocus) {
-            incomingSlide.setAttribute('tabindex', '-1');
-            incomingSlide.focus();
-        }
+        // double-wrap a rAF call to ensure the browser updates the DOM with CSS classes and re-renders *before* executing the rest of the function
+        window.requestAnimationFrame(() => {
+
+            window.requestAnimationFrame(setFocus => {
+            
+                newCurrentSlide.classList.remove('u-carousa11y__slide--notransitiontime');
+                
+                newCurrentSlide.classList.add('s-carousa11y__slide--current');
+                oldCurrentSlide.classList.remove('s-carousa11y__slide--current');
+                
+                setTimeout(() => {
+                    oldCurrentSlide.setAttribute('aria-hidden', 'true');
+                    newCurrentSlide.removeAttribute('aria-hidden');
+                    newCurrentSlide.classList.remove('s-carousa11y__slide--next');
+                    newCurrentSlide.classList.remove('s-carousa11y__slide--previous');
+                    oldPreviousSlide.classList.remove('s-carousa11y__slide--previous');
+                    newPreviousSlide.classList.add('s-carousa11y__slide--previous');
+                    oldNextSlide.classList.remove('s-carousa11y__slide--next');
+                    newNextSlide.classList.add('s-carousa11y__slide--next');
+     
+                    if (setFocus) {
+                        newCurrentSlide.setAttribute('tabindex', '-1');
+                        newCurrentSlide.focus();
+                    }
+
+                }, this.transitionTime);
+
+            });
+
+        });
 
     }
 

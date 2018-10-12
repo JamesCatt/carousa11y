@@ -277,6 +277,7 @@ export default class Carousa11y {
                 oldCurrentSlide.classList.remove('s-carousa11y__slide--current');
                 
                 setTimeout(() => {
+                    this._setCurrentControl(slideIndex);
                     oldCurrentSlide.setAttribute('aria-hidden', 'true');
                     newCurrentSlide.removeAttribute('aria-hidden');
                     newCurrentSlide.classList.remove('s-carousa11y__slide--next');
@@ -297,6 +298,26 @@ export default class Carousa11y {
 
         });
 
+    }
+
+    /**
+     * Sets aria-current on the appropriate 'go to' button, if applicable
+     * @param {number} slideIndex - index of the 'go to' button that should be set to current
+     */
+    _setCurrentControl(slideIndex) {
+
+        Array.from(this.carouselRoot.querySelectorAll(`button[data-slide-button]`)).forEach((button, index) => {
+
+            if (index === slideIndex) {
+                button.setAttribute('aria-current', 'true');
+                button.classList.add('s-carousa11y__button--current');
+            } else {
+                button.removeAttribute('aria-current');
+                button.classList.remove('s-carousa11y__button--current');
+            }
+
+        });
+        
     }
 
     // Control creation methods

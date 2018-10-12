@@ -1,22 +1,44 @@
-body {
-    font-family: Helvetica, Arial, sans-serif;
-}
 
-.c-carousa11y__list {
-    list-style: none;
-    overflow: hidden;
-    padding: 0;
+.c-carousa11y {
+    border-color: white;
+    font-size: 20px;
     position: relative;
     width: 400px;
     height: 200px;
 }
 
+.c-carousa11y__list {
+    list-style: none;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
 .c-carousa11y__slide {
+    box-sizing: border-box;
     transition: transform .3s ease 0s, visibility 0s linear .3s;
     position: absolute;
     top: 0;
     left: 0;
+    right: 0;
+    bottom: 0;
     visibility: hidden;
+
+    &:focus-visible::after {
+        box-shadow: 0 0 2px 1px inset rgb(113, 198, 252);
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 100;
+    }
 
     &.s-carousa11y__slide--next {
         transform: translateX(100%);
@@ -30,14 +52,69 @@ body {
         transform: none;
         transition: transform .3s ease 0s;
         visibility: visible;
-        z-index: 10000;
-    }
-
-    &.u-carousa11y__slide--notransitiontime {
-        transition-duration: 0s !important;
+        z-index: 1000;
     }
 }
 
 .c-carousa11y__button {
-    width: 2rem;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: inherit;
+    padding: 0;
+    height: 2.2em;
+    width: 2.2em;
+    z-index: 10000;
+}
+
+.c-carousa11y__controls {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.c-carousa11y__button--prev,
+.c-carousa11y__button--next {
+    position: absolute;
+    top: calc(50% - 1.1em);
+}
+
+.c-carousa11y__button--prev {
+    left: 0;
+}
+
+.c-carousa11y__button--next {
+    right: 0;
+}
+
+.c-carousa11y__controls--goto {
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+}
+
+.c-carousa11y__button--go-to-slide {
+    //font-size: 
+}
+
+.c-carousa11y__button--play-stop {
+    position: absolute;
+    top: 100%;
+    right: 0;
+}
+
+.u-transitionduration--0 {
+    transition-duration: 0s !important;
+}
+
+.u-display--screenreader-only {
+    position: absolute;
+    left: -1000vw;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
 }

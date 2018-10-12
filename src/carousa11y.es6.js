@@ -252,7 +252,7 @@ export default class Carousa11y {
         const newNextSlide = this.carouselSlides[this.nextSlideIndex];
         const newPreviousSlide = this.carouselSlides[this.previousSlideIndex];
 
-        newCurrentSlide.classList.add('u-carousa11y__slide--notransitiontime');
+        newCurrentSlide.classList.add('u-transitionduration--0');
 
         if (directionIsForwards) {
 
@@ -263,7 +263,7 @@ export default class Carousa11y {
 
             newCurrentSlide.classList.add('s-carousa11y__slide--previous');
             newCurrentSlide.classList.remove('s-carousa11y__slide--next');
-            
+
         }
 
         // double-wrap a rAF call to ensure the browser updates the DOM with CSS classes and re-renders *before* executing the rest of the function
@@ -271,7 +271,7 @@ export default class Carousa11y {
 
             window.requestAnimationFrame(setFocus => {
             
-                newCurrentSlide.classList.remove('u-carousa11y__slide--notransitiontime');
+                newCurrentSlide.classList.remove('u-transitionduration--0');
                 
                 newCurrentSlide.classList.add('s-carousa11y__slide--current');
                 oldCurrentSlide.classList.remove('s-carousa11y__slide--current');
@@ -391,7 +391,10 @@ export default class Carousa11y {
             let goToSlideButton = document.createElement('button');
             goToSlideButton.classList.add('c-carousa11y__button', 'c-carousa11y__button--go-to-slide');
             goToSlideButton.dataset.slideButton = i + 1;
-            goToSlideButton.innerHTML = `<span class="u-display--screenreader-only">Go to slide ${i + 1}</span>`;
+            goToSlideButton.innerHTML = 
+            
+                '<span class="u-display--screenreader-only">Go to slide ${i + 1}</span>' +
+                '<svg xlmns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="c-carousa11y__button-icon c-carousa11y__button-icon--go-to-slide"><circle cx="10" cy="10" r="2"></svg>';
 
             if (i === this._currentSlide) {
                 goToSlideButton.setAttribute('aria-current', 'true');

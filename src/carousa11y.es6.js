@@ -90,6 +90,7 @@ export default class Carousa11y {
                     this.goToSlide(e.currentTarget.dataset.slideButton, null, true);
                 });
             });
+            this._setCurrentControl(this._currentSlideIndex);
         }
 
     }

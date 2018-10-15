@@ -157,14 +157,15 @@ export default class Carousa11y {
      */
     stop(dispatchUpdateEvent = true) {
 
+        if (this._playing) {
+            this._setAnnounceMessage('Playback stopped');
+        }
+
         this._playing = false;
         clearInterval(this._autoAdvanceTimer);
         if (dispatchUpdateEvent) {
             this._dispatchUpdateEvent();
         }
-        this._setAnnounceMessage('Playback stopped');
-
-        // TODO: dispatch event
 
     }
 

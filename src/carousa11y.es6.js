@@ -75,8 +75,14 @@ export default class Carousa11y {
 
         if (this.autoCreateControls.prevNextButtons !== false) {
             this.carouselRoot.appendChild(this._createPrevNextControls());
-            this.carouselRoot.querySelector('#carousa11yNextButton').addEventListener('click', () => {this.goToNextSlide();});
-            this.carouselRoot.querySelector('#carousa11yPrevButton').addEventListener('click', () => {this.goToPreviousSlide();});
+            this.carouselRoot.querySelector('#carousa11yNextButton').addEventListener('click', () => {
+                this.goToNextSlide();
+                this.stop();
+            });
+            this.carouselRoot.querySelector('#carousa11yPrevButton').addEventListener('click', () => {
+                this.goToPreviousSlide();
+                this.stop();
+            });
         }
 
         if (this.autoCreateControls.playStopButton !== false) {
@@ -90,6 +96,7 @@ export default class Carousa11y {
             slideButtons.forEach(slideButton => {
                 slideButton.addEventListener('click', e => {
                     this.goToSlide(e.currentTarget.dataset.slideButton, true);
+                    this.stop();
                 });
             });
             this._setCurrentControl(this._currentSlideIndex);

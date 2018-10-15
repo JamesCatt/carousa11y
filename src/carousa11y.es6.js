@@ -88,6 +88,9 @@ export default class Carousa11y {
         if (this.autoCreateControls.playStopButton !== false) {
             this.carouselRoot.appendChild(this._createPlayStopButton(this._playing));
             this.carouselRoot.querySelector('#carousa11yPlayStopButton').addEventListener('click', () => {this.togglePlay();});
+            this.carouselRoot.addEventListener('carousa11yUpdate', () => {
+                this._setPlayStopButtonState();
+            });
         }
 
         if (this.autoCreateControls.slideButtons !== false) {
@@ -155,7 +158,6 @@ export default class Carousa11y {
     stop(dispatchUpdateEvent = true) {
 
         this._playing = false;
-        this._setPlayStopButtonState();
         clearInterval(this._autoAdvanceTimer);
         if (dispatchUpdateEvent) {
             this._dispatchUpdateEvent();
@@ -284,7 +286,6 @@ export default class Carousa11y {
         this._playing = true;
         clearInterval(this._autoAdvanceTimer);
         this._autoAdvanceTimer = setInterval(() => {this.goToNextSlide();}, this.autoAdvanceTime);
-        this._setPlayStopButtonState();
 
     }
 

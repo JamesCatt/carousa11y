@@ -77,11 +77,11 @@ export default class Carousa11y {
             this.carouselRoot.appendChild(this._createPrevNextControls());
             this.carouselRoot.querySelector('#carousa11yNextButton').addEventListener('click', () => {
                 this.goToNextSlide();
-                this.stop();
+                this.stop(false);
             });
             this.carouselRoot.querySelector('#carousa11yPrevButton').addEventListener('click', () => {
                 this.goToPreviousSlide();
-                this.stop();
+                this.stop(false);
             });
         }
 
@@ -96,7 +96,7 @@ export default class Carousa11y {
             slideButtons.forEach(slideButton => {
                 slideButton.addEventListener('click', e => {
                     this.goToSlide(e.currentTarget.dataset.slideButton, true);
-                    this.stop();
+                    this.stop(false);
                 });
             });
             this._setCurrentControl(this._currentSlideIndex);
@@ -152,11 +152,14 @@ export default class Carousa11y {
     /**
      * Stop auto-advancing the carousel
      */
-    stop() {
+    stop(dispatchUpdateEvent = true) {
 
         this._playing = false;
         this._setPlayStopButtonState();
         clearInterval(this._autoAdvanceTimer);
+        if (dispatchUpdateEvent) {
+            this._dispatchUpdateEvent();
+        }
         this._setAnnounceMessage('Playback stopped');
 
         // TODO: dispatch event
@@ -283,8 +286,6 @@ export default class Carousa11y {
         this._autoAdvanceTimer = setInterval(() => {this.goToNextSlide();}, this.autoAdvanceTime);
         this._setPlayStopButtonState();
 
-        // TODO: dispatch event
-
     }
 
     /**
@@ -300,6 +301,23 @@ export default class Carousa11y {
         if (this.autoCreateControls.announceElement !== false) {
             this.carouselRoot.querySelector('#carousa11yAnnounceElement').innerHTML = message;
         }
+
+    }
+
+    /**
+     * Dispatches a custom event with the current state
+     */
+    _dispatchUpdateEvent() {
+
+        const updateDetails = {
+            playing: this._playing,
+            currentSlide: this.currentSlide,
+            currentSlideIndex: this.currentSlideIndex,
+        }
+
+        const updateEvent = new CustomEvent("carousa11yUpdate", {detail: updateDetails});
+
+        this.carouselRoot.dispatchEvent(updateEvent);
 
     }
 
@@ -382,6 +400,7 @@ export default class Carousa11y {
                     oldCurrentSlide.setAttribute('aria-hidden', 'true');
                     newCurrentSlide.removeAttribute('aria-hidden');
 
+                    this._dispatchUpdateEvent();
                     this._setAnnounceMessage(`Slide ${this.currentSlide} of ${this.carouselSlides.length}`);
 
                     newCurrentSlide.classList.remove('s-carousa11y__slide--next');

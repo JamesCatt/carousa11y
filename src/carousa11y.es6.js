@@ -503,7 +503,7 @@ export default class Carousa11y {
             goToSlideButton.dataset.slideButton = i + 1;
             goToSlideButton.innerHTML = 
             
-                '<span class="u-display--screenreader-only">Go to slide ${i + 1}</span>' +
+                `<span class="u-display--screenreader-only">Go to slide ${i + 1}</span>` +
                 '<svg xlmns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="c-carousa11y__button-icon c-carousa11y__button-icon--go-to-slide"><circle cx="10" cy="10" r="2"></svg>';
 
             if (i === this._currentSlide) {

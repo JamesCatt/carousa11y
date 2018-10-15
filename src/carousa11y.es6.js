@@ -286,6 +286,22 @@ export default class Carousa11y {
 
     }
 
+    /**
+     * Function to update the announce element for screen readers.
+     * @param {string} message - Message to be inserted into the announce element 
+     */
+    _setAnnounceMessage(message) {
+
+        if (typeof message !== 'string') {
+            throw new Error('_announceMessage must be called with a string.');
+        }
+
+        if (this.autoCreateControls.announceElement !== false) {
+            this.carouselRoot.querySelector('#carousa11yAnnounceElement').innerHTML = message;
+        }
+
+    }
+
     _setPlayStopButtonState() {
 
         if (this.autoCreateControls.playStopButton === false) {
@@ -365,9 +381,7 @@ export default class Carousa11y {
                     oldCurrentSlide.setAttribute('aria-hidden', 'true');
                     newCurrentSlide.removeAttribute('aria-hidden');
 
-                    if (this.autoCreateControls.announceElement !== false) {
-                        this.carouselRoot.querySelector('#carousa11yAnnounceElement').innerHTML = `Slide ${this.currentSlide} of ${this.carouselSlides.length}`;
-                    }
+                    this._setAnnounceMessage(`Slide ${this.currentSlide} of ${this.carouselSlides.length}`);
 
                     newCurrentSlide.classList.remove('s-carousa11y__slide--next');
                     newCurrentSlide.classList.remove('s-carousa11y__slide--previous');

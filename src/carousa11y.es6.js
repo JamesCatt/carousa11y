@@ -61,6 +61,7 @@ export default class Carousa11y {
         // Private properties
         this._playing = this.autoAdvanceTime !== 0;
         this._currentSlideIndex = 0;
+        this._autoAdvanceTimer;
 
         // Set appropriate starting CSS classes on slides
         this.carouselSlides[this.currentSlideIndex].classList.add('s-carousa11y__slide--current');
@@ -74,12 +75,13 @@ export default class Carousa11y {
 
         if (this.autoCreateControls.prevNextButtons !== false) {
             this.carouselRoot.appendChild(this._createPrevNextControls());
-            document.getElementById('carousa11yNextButton').addEventListener('click', () => {this.goToNextSlide();});
-            document.getElementById('carousa11yPrevButton').addEventListener('click', () => {this.goToPreviousSlide();});
+            this.carouselRoot.querySelector('#carousa11yNextButton').addEventListener('click', () => {this.goToNextSlide();});
+            this.carouselRoot.querySelector('#carousa11yPrevButton').addEventListener('click', () => {this.goToPreviousSlide();});
         }
 
         if (this.autoCreateControls.playStopButton !== false) {
             this.carouselRoot.appendChild(this._createPlayStopButton(this._playing));
+            this.carouselRoot.querySelector('#carousa11yPlayStopButton').addEventListener('click', () => {this.togglePlay();});
         }
 
         if (this.autoCreateControls.slideButtons !== false) {
@@ -91,6 +93,11 @@ export default class Carousa11y {
                 });
             });
             this._setCurrentControl(this._currentSlideIndex);
+        }
+
+        // kick-off
+        if (this._playing) {
+            this._autoAdvance();
         }
 
     }
@@ -118,17 +125,51 @@ export default class Carousa11y {
     }
 
     /**
-     * Start auto-advancing the carousel
+     * Start auto-advance the carousel. If the autoAdvance timeout setting === 0, just move it forward once.
      */
     play() {
-        this._playing = true;
+
+        if (this.autoAdvanceTime !== 0) {
+
+            this._playing = true;
+            this._autoAdvance();
+
+        }
+
+        this.goToNextSlide();
+
+        // TODO: dispatch event
+
     }
 
     /**
      * Stop auto-advancing the carousel
      */
     stop() {
+
         this._playing = false;
+        this._setPlayStopButtonState();
+        clearInterval(this._autoAdvanceTimer);
+
+        // TODO: dispatch event
+
+    }
+
+    /**
+     * Toggles current play state on or off
+     */
+    togglePlay() {
+
+        if (this._playing) {
+
+            this.stop();
+
+        } else {
+
+            this.play();
+
+        }
+        
     }
 
     /**
@@ -224,6 +265,41 @@ export default class Carousa11y {
      * 
      */
     _autoAdvance() {
+
+        if (this.autoAdvanceTime <= 0) {
+            throw new Error('_autoAdvance was called with timeout <= 0');
+        }
+
+        this._playing = true;
+        clearInterval(this._autoAdvanceTimer);
+        this._autoAdvanceTimer = setInterval(() => {this.goToNextSlide();}, this.autoAdvanceTime);
+        this._setPlayStopButtonState();
+
+        // TODO: dispatch event
+
+    }
+
+    _setPlayStopButtonState() {
+
+        if (this.autoCreateControls.playStopButton === false) {
+            return;
+        }
+
+        let playStopButton = this.carouselRoot.querySelector('#carousa11yPlayStopButton');
+
+        if (this._playing) {
+
+            playStopButton.setAttribute('aria-pressed', 'true');
+            playStopButton.classList.remove('s-carousa11y__button--stopped');
+            playStopButton.classList.add('s-carousa11y__button--playing');
+
+        } else {
+
+            playStopButton.setAttribute('aria-pressed', 'false');
+            playStopButton.classList.remove('s-carousa11y__button--playing');
+            playStopButton.classList.add('s-carousa11y__button--stopped');
+
+        }
 
     }
 
@@ -390,7 +466,7 @@ export default class Carousa11y {
         playStopButton.innerHTML = 
 
             '<!-- Zondicons by Steve Shroger (modified) - http://www.zondicons.com/ -->' +
-            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="-5 -5 30 30" class="c-carousa11y__button-icon c-carousa11y__button-icon--play" aria-hidden="true" role="presentation"><path class="c-carousa11y__button-icon--play__triangle" d="M4 4l12 6-12 6z"/><path class="c-carousa11y__button-icon--play__crossline" d="M2 2L18 18" stroke="black"/><path class="c-carousa11y__button-icon--play__crossline" d="M18 2L2 18" stroke="black"/></svg>';
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="-5 -5 30 30" class="c-carousa11y__button-icon c-carousa11y__button-icon--play" aria-hidden="true" role="presentation"><path class="c-carousa11y__button-icon--play__triangle" d="M4 4l12 6-12 6z"/><path class="c-carousa11y__button-icon--play__crossline" d="M2 2L18 18" stroke="#eb0000"/><path class="c-carousa11y__button-icon--play__crossline" d="M18 2L2 18" stroke="#eb0000"/></svg>';
 
         return playStopButton;
 

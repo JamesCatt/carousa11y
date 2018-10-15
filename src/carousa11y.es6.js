@@ -87,7 +87,7 @@ export default class Carousa11y {
             const slideButtons = Array.from(document.getElementsByClassName('c-carousa11y__button--go-to-slide'));
             slideButtons.forEach(slideButton => {
                 slideButton.addEventListener('click', e => {
-                    this.goToSlide(e.currentTarget.dataset.slideButton, null, true);
+                    this.goToSlide(e.currentTarget.dataset.slideButton, true);
                 });
             });
             this._setCurrentControl(this._currentSlideIndex);
@@ -114,7 +114,7 @@ export default class Carousa11y {
      * @param {Number} slideNumber - Number of the slide to go to, not zero-indexed (i.e., first slide === 1).
      */
     goToSlide(slideNumber, setFocus, directionIsForwards) {
-        this._goToSlide(slideNumber - 1, setFocus), directionIsForwards;
+        this._goToSlide(slideNumber - 1, setFocus, directionIsForwards);
     }
 
     /**
@@ -270,7 +270,7 @@ export default class Carousa11y {
         // double-wrap a rAF call to ensure the browser updates the DOM with CSS classes and re-renders *before* executing the rest of the function
         window.requestAnimationFrame(() => {
 
-            window.requestAnimationFrame(setFocus => {
+            window.requestAnimationFrame(() => {
             
                 newCurrentSlide.classList.remove('u-transitionduration--0');
                 

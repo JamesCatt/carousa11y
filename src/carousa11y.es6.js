@@ -157,6 +157,7 @@ export default class Carousa11y {
         this._playing = false;
         this._setPlayStopButtonState();
         clearInterval(this._autoAdvanceTimer);
+        this._setAnnounceMessage('Playback stopped');
 
         // TODO: dispatch event
 

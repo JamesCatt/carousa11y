@@ -79,7 +79,7 @@ export default class Carousa11y {
         }
 
         if (this.autoCreateControls.playStopButton !== false) {
-            this.carouselRoot.appendChild(this._createPlayStopButton(this.autoAdvanceTime > 0));
+            this.carouselRoot.appendChild(this._createPlayStopButton(this._playing));
         }
 
         if (this.autoCreateControls.slideButtons !== false) {
@@ -121,14 +121,14 @@ export default class Carousa11y {
      * Start auto-advancing the carousel
      */
     play() {
-
+        this._playing = true;
     }
 
     /**
      * Stop auto-advancing the carousel
      */
     stop() {
-
+        this._playing = false;
     }
 
     /**
@@ -383,14 +383,14 @@ export default class Carousa11y {
 
         let playStopButton = document.createElement('button');
         playStopButton.setAttribute('id', 'carousa11yPlayStopButton');
-        playStopButton.setAttribute('aria-label', currentlyPlaying === true ? 'Stop' : 'Play');
+        playStopButton.setAttribute('aria-label', 'Play');
+        playStopButton.setAttribute('aria-pressed', currentlyPlaying ? 'true' : 'false');
         playStopButton.dataset.state = currentlyPlaying === true ? 'playing' : 'stopped';
-        playStopButton.className = 'c-carousa11y__button c-carousa11y__button--play-stop';
+        playStopButton.className = `c-carousa11y__button c-carousa11y__button--play-stop ${currentlyPlaying ? 's-carousa11y__button--playing' : 's-carousa11y__button--stopped'}`;
         playStopButton.innerHTML = 
 
-            '<!-- Zondicons by Steve Shroger - http://www.zondicons.com/ -->' +
-            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="c-carousa11y__button-icon c-carousa11y__button-icon--play" aria-hidden="true" role="presentation"><path d="M4 4l12 6-12 6z"/></svg>' +
-            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="c-carousa11y__button-icon c-carousa11y__button-icon--pause" aria-hidden="true" role="presentation"><path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zM7 6v8h2V6H7zm4 0v8h2V6h-2z"/></svg>';
+            '<!-- Zondicons by Steve Shroger (modified) - http://www.zondicons.com/ -->' +
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="-5 -5 30 30" class="c-carousa11y__button-icon c-carousa11y__button-icon--play" aria-hidden="true" role="presentation"><path class="c-carousa11y__button-icon--play__triangle" d="M4 4l12 6-12 6z"/><path class="c-carousa11y__button-icon--play__crossline" d="M2 2L18 18" stroke="black"/><path class="c-carousa11y__button-icon--play__crossline" d="M18 2L2 18" stroke="black"/></svg>';
 
         return playStopButton;
 

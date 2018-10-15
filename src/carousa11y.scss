@@ -111,6 +111,22 @@
     right: 0;
 }
 
+.c-carousa11y__button-icon--play {
+    fill: #000;
+
+    .s-carousa11y__button--stopped & {
+        fill: #868686;
+    }
+}
+
+.c-carousa11y__button-icon--play__crossline {
+    visibility: hidden;
+
+    .s-carousa11y__button--stopped & {
+        visibility: visible;
+    }
+}
+
 .u-transitionduration--0 {
     transition-duration: 0s !important;
 }

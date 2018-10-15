@@ -357,6 +357,11 @@ export default class Carousa11y {
                     this._setCurrentControl(slideIndex);
                     oldCurrentSlide.setAttribute('aria-hidden', 'true');
                     newCurrentSlide.removeAttribute('aria-hidden');
+
+                    if (this.autoCreateControls.announceElement !== false) {
+                        this.carouselRoot.querySelector('#carousa11yAnnounceElement').innerHTML = `Slide ${this.currentSlide} of ${this.carouselSlides.length}`;
+                    }
+
                     newCurrentSlide.classList.remove('s-carousa11y__slide--next');
                     newCurrentSlide.classList.remove('s-carousa11y__slide--previous');
                     oldPreviousSlide.classList.remove('s-carousa11y__slide--previous');

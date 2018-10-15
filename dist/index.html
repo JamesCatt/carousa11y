@@ -30,6 +30,10 @@
             };
 
             var carousel = new Carousa11y(root, slides);
+
+            root.addEventListener('carousa11yUpdate', e => {
+                console.log(e.detail);
+            });
         
         </script>
 

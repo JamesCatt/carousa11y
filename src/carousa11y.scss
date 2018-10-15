@@ -77,6 +77,16 @@
 .c-carousa11y__button--next {
     position: absolute;
     top: calc(50% - 1.1em);
+
+    .c-carousa11y__button-icon {
+        stroke: white;
+        stroke-width: .5;
+    }
+
+    &:active .c-carousa11y__button-icon {
+        fill: white;
+        stroke: black;
+    }
 }
 
 .c-carousa11y__button--prev {
@@ -96,27 +106,19 @@
     right: 0;
 }
 
+.c-carousa11y__button--go-to-slide:active {
+    fill: #767676;
+}
+
 .s-carousa11y__button--current {
     fill: #cdcdcd;
     stroke: #000;
-}
-
-.c-carousa11y__button--go-to-slide {
-    //font-size: 
 }
 
 .c-carousa11y__button--play-stop {
     position: absolute;
     top: 100%;
     right: 0;
-}
-
-.c-carousa11y__button-icon--play {
-    //fill: #000;
-
-    .s-carousa11y__button--stopped & {
-        //fill: #767676;
-    }
 }
 
 .c-carousa11y__button-icon--play__crossline {

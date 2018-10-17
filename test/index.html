@@ -2,16 +2,16 @@
 <html>
     <head>
 
-        <title>Carousa11y Test</title>
+        <title>Carousa11y Development Test Page</title>
 
-        <script src="carousa11y.min.js"></script>
+        <script src="/assets/carousa11y.min.js"></script>
 
-        <link rel="stylesheet" href="carousa11y.css">
+        <link rel="stylesheet" href="/assets/carousa11y.css">
 
     </head>
     <body>
 
-        <h1>Carousa11y Test</h1>
+        <h1>Carousa11y Development Test Page</h1>
 
         <div id="root" class="c-carousa11y">
             <ul class="c-carousa11y__list">
@@ -31,7 +31,7 @@
 
             var carousel = new Carousa11y(root, slides);
 
-            root.addEventListener('carousa11yUpdate', function(e) {
+            root.addEventListener('carousa11yUpdate', e => {
                 console.log(e.detail);
             });
         

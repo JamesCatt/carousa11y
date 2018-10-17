@@ -3,18 +3,20 @@
   "version": "0.0.1",
   "description": "An accessible carousel class.",
   "private": true,
-  "main": "webpack.config.js",
+  "main": "webpack.common.js",
   "scripts": {
     "test": "jest",
-    "build": "webpack",
-    "start": "webpack-dev-server --open --hot"
+    "build": "webpack --config webpack.prod.js",
+    "start": "webpack-dev-server --open --hot --config webpack.dev.js"
   },
   "author": "James Catt",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.1.2",
+    "@babel/plugin-transform-classes": "^7.1.0",
     "@babel/preset-env": "^7.1.0",
     "babel-core": "^7.0.0-bridge.0",
+    "babel-loader": "^8.0.4",
     "clean-webpack-plugin": "^0.1.19",
     "css-loader": "^1.0.0",
     "jest": "^23.6.0",
@@ -26,11 +28,15 @@
     "style-loader": "^0.23.0",
     "webpack": "^4.20.2",
     "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.1.9"
+    "webpack-dev-server": "^3.1.9",
+    "webpack-merge": "^4.1.4"
   },
   "babel": {
     "presets": [
       "@babel/preset-env"
+    ],
+    "plugins": [
+      "@babel/plugin-transform-classes"
     ]
   },
   "jest": {
@@ -40,7 +46,10 @@
     ],
     "testEnvironment": "jsdom",
     "setupFiles": [
-      "<rootDir>/src/carousa11y.es6.js"
+      "<rootDir>/dist/carousa11y.min.js"
     ]
+  },
+  "dependencies": {
+    "custom-event-polyfill": "^1.0.6"
   }
 }

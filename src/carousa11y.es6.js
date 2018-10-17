@@ -5,6 +5,7 @@
  */
 
 import './carousa11y.scss';
+import 'custom-event-polyfill';
 
 export default class Carousa11y {
     
@@ -95,7 +96,7 @@ export default class Carousa11y {
 
         if (this.autoCreateControls.slideButtons !== false) {
             this.carouselRoot.appendChild(this._createGoToSlideControls(this.carouselSlides.length));
-            const slideButtons = Array.from(document.getElementsByClassName('c-carousa11y__button--go-to-slide'));
+            const slideButtons = [].slice.call(document.getElementsByClassName('c-carousa11y__button--go-to-slide'));
             slideButtons.forEach(slideButton => {
                 slideButton.addEventListener('click', e => {
                     this.goToSlide(e.currentTarget.dataset.slideButton, true);
@@ -431,7 +432,7 @@ export default class Carousa11y {
      */
     _setCurrentControl(slideIndex) {
 
-        Array.from(this.carouselRoot.querySelectorAll(`button[data-slide-button]`)).forEach((button, index) => {
+        [].slice.call(this.carouselRoot.querySelectorAll(`button[data-slide-button]`)).forEach((button, index) => {
 
             if (index === slideIndex) {
                 button.setAttribute('aria-current', 'true');

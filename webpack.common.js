@@ -4,13 +4,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const devMode = process.env.NODE_ENV !== 'production';
 
 module.exports = {
-        mode: 'development',
         entry: './src/carousa11y.es6.js',
-        devtool: 'cheap-source-map',
-        devServer: {
-            contentBase: './dist',
-            publicPath: '/assets/',
-        },
         output: {
             filename: 'carousa11y.min.js',
             path: path.resolve(__dirname, 'dist'),
@@ -42,6 +36,16 @@ module.exports = {
                             }
                         }
                     ]
+                },
+                {
+                    test: /\.m?js$/,
+                    exclude: /(node_modules|bower_components)/,
+                    use: {
+                        loader: 'babel-loader',
+                        options: {
+                            presets: ['@babel/preset-env']
+                        }
+                    }
                 }
             ]
         },

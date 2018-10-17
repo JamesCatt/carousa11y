@@ -456,7 +456,8 @@ export default class Carousa11y {
         announceElement.id = 'carousa11yAnnounceElement';
         announceElement.setAttribute('aria-live', 'polite');
         announceElement.setAttribute('aria-atomic', 'true');
-        announceElement.classList.add('c-carousa11y__announce', 'u-display--screenreader-only');
+        announceElement.classList.add('c-carousa11y__announce')
+        announceElement.classList.add('u-display--screenreader-only');
 
         return announceElement;
     }
@@ -467,7 +468,8 @@ export default class Carousa11y {
     _createPrevNextControls() {
 
         let controlsElement = document.createElement('ul');
-        controlsElement.classList.add('c-carousa11y__controls', 'c-carousa11y__controls--prev-next');
+        controlsElement.classList.add('c-carousa11y__controls')
+        controlsElement.classList.add('c-carousa11y__controls--prev-next');
 
         controlsElement.innerHTML = 
 
@@ -528,15 +530,18 @@ export default class Carousa11y {
     _createGoToSlideControls(slideCount) {
 
         let goToControlsElement = document.createElement('ol');
-        goToControlsElement.classList.add('c-carousa11y__controls', 'c-carousa11y__controls--goto');
+        goToControlsElement.classList.add('c-carousa11y__controls')
+        goToControlsElement.classList.add('c-carousa11y__controls--goto');
 
         for (let i = 0; i < slideCount; i++) {
 
             let goToSlideItem = document.createElement('li');
-            goToSlideItem.classList.add('c-carousa11y__controls-item', 'c-carousa11y__controls-item--go-to-slide');
+            goToSlideItem.classList.add('c-carousa11y__controls-item')
+            goToSlideItem.classList.add('c-carousa11y__controls-item--go-to-slide');
 
             let goToSlideButton = document.createElement('button');
-            goToSlideButton.classList.add('c-carousa11y__button', 'c-carousa11y__button--go-to-slide');
+            goToSlideButton.classList.add('c-carousa11y__button')
+            goToSlideButton.classList.add('c-carousa11y__button--go-to-slide');
             goToSlideButton.dataset.slideButton = i + 1;
             goToSlideButton.innerHTML = 
             
